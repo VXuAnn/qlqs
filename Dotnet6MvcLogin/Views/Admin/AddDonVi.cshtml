@@ -1,0 +1,66 @@
+﻿@model MvcLogin.Models.DonVi
+@using Dotnet6MvcLogin.Models.DTO;
+@using Dotnet6MvcLogin.Repositories.Abstract;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Mvc;
+
+@using MvcLogin.Models;
+
+
+
+
+
+
+<body>
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success">@TempData["success"]</div>
+    }
+
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error"]</div>
+    }
+    @if (TempData["errorTB"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error"]</div>
+    }
+    <div class="contact-container">
+        <form asp-action="AddDonViNew" class="contact-left">
+            @* <input type="text" name="IDdv" placeholder="IDdv" class="contact-inputs" required>
+            <input type="email" name="Ngay" placeholder="Ngay" class="contact-inputs" required>
+            <input type="text" name="Tổng quân số" placeholder="Tổng quân số" class="contact-inputs" required>
+            <input type="email" name="Quân số vắng" placeholder="Quân số vắng" class="contact-inputs" required>
+            <input type="text" name="Đào ngũ" placeholder="Đào ngũ" class="contact-inputs" required>
+            <input type="email" name="Đi viện" placeholder="Đi viện" class="contact-inputs" required>
+            <input type="text" name="Đi bệnh xá" placeholder="Đi bệnh xá" class="contact-inputs" required>
+            <input type="text" name="Đi học" placeholder="Đi học" class="contact-inputs" required>
+            <input type="email" name="Đi thực tê" placeholder="Đi thực tê" class="contact-inputs" required>
+            <input type="text" name="Thực tập" placeholder="Thực tập" class="contact-inputs" required>
+            <input type="email" name="Đi tranh thủ" placeholder="Đi tranh thủ" class="contact-inputs" required>
+            <input type="text" name="Đi công tác" placeholder="Đi công tác" class="contact-inputs" required>
+            <input type="email" name="Thai sản" placeholder="Thai sản" class="contact-inputs" required>
+            <input type="text" name="Lý do khác" placeholder="Lý do khác" class="contact-inputs" required>
+            <input type="email" name="Chú thích" placeholder="Chú thích" class="contact-inputs" required> *@
+            <div class="grid-container">
+                <div class="grid-column">
+                    <input asp-for="IdDv" type="text" name="IDdv" placeholder="IDdv" class="contact-inputs"  />
+                    @*  <input asp-for="Ngay" type="text" name="Ngay" placeholder="Ngay" class="contact-inputs"> *@
+                    <input asp-for="TenDv" type="text" name="TenDv" placeholder="Tên Đơn vị" class="contact-inputs">
+                    
+
+                </div>
+
+           
+            
+
+            <button type="submit">Thêm </button>
+           
+
+        </form>
+    </div>
+</body>
+
+
+<link rel="stylesheet" href="~/css/nhapqs.css">
+

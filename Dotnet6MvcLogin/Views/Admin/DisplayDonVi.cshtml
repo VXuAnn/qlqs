@@ -1,0 +1,45 @@
+﻿@using MvcLogin.Models
+@model IEnumerable<DonVi>
+
+
+
+
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdDv)
+
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.TenDv)
+
+            </th>
+
+
+        </tr>
+    </thead>
+   
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.IdBcqs)
+            </td> *@
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdDv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenDv)
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+    
+</table>

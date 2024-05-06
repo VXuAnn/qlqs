@@ -1,0 +1,41 @@
+﻿@using MvcLogin.Models
+@model IEnumerable<LoginHistory>
+
+<form method="get" action="History">
+    <label for="name">Division ID:</label>
+    <input type="text" id="name" name="name" placeholder="Enter Division ID">
+    <button type="submit">Search</button>
+</form>
+<form method="get" asp-action="History">
+    <div class="form-group">
+        <label for="ngay">Ngày:</label>
+        <input type="date" class="form-control" id="ngay" name="ngay" />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoginTime)
+
+            </th>
+            @* <th>First Name</th>
+            <th>Login Time</th> *@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td class="date-formattt">@Html.DisplayFor(modelItem => item.LoginTime)</td>
+            </tr>
+        }
+    </tbody>
+</table>

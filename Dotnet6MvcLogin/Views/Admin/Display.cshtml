@@ -1,0 +1,75 @@
+﻿@using MvcLogin.Models
+@model IEnumerable<Users>
+
+
+<form method="get" action="Display">
+    <label for="id_dv">Division ID:</label>
+    <input type="text" id="id_dv" name="id_dv" placeholder="Enter Division ID">
+    <button type="submit">Search</button>
+</form>
+
+
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                Đơn Vị
+
+            </th>
+            <th>
+              Họ
+
+            </th>
+            <th>
+               Tên
+
+            </th>
+
+            <th>
+               Email
+
+            </th>
+            
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+   <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.IdBcqs)
+            </td> *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdDv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+               
+
+                <td>
+                    @if (item.IsDataEntryAllowed)
+                    {
+                        <span style="color: green;">Đã nhập</span>
+                    }
+                    else
+                    {
+                        <span style="color: red;">Chưa nhập</span>
+                    }
+                </td>
+            </tr>
+        }
+   </tbody>
+</table>
+<a href="#">Hiển thị thêm</a>

@@ -1,0 +1,29 @@
+﻿@model List<ThongKe.Models.ThongkeEntity>
+
+<head>
+    <link rel="stylesheet" href="~/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<div>
+    Từ ngày: <input type="date" id="startDatePicker" placeholder="dd/mm/yyyy">
+    Đến ngày: <input type="date" id="endDatePicker" placeholder="dd/mm/yyyy">
+    Chọn đơn vị:
+    <select id="idDvDropdown">
+        @* <option >Học Viện</option> *@
+        @foreach (var item in Model.Select(d => d.id_dv).Distinct())
+        {
+            <option value="@item">@item</option>
+            
+        }
+    </select>
+    <button class="btn" id="thongKeButton" onclick="getDataForChart()">Thống kê đơn vị</button>
+    <button onclick="getDataForChartHV()">Thống kê Học Viện</button>
+</div>
+
+<canvas id="tkchart"></canvas>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/TK.js"></script>
+}

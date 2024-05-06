@@ -1,0 +1,140 @@
+﻿@model MvcLogin.Models.Combinecs
+@using Dotnet6MvcLogin.Models.DTO;
+@using Dotnet6MvcLogin.Repositories.Abstract;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Mvc;
+
+@using MvcLogin.Models;
+
+
+<body>
+    <!-- Alerts -->
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success">@TempData["success"]</div>
+    }
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error"]</div>
+    }
+    @if (TempData["errorTB"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error"]</div>
+    }
+
+    <!-- Main form -->
+    <div class="contact-container">
+        <form asp-action="AddNewQuanSo" class="contact-left">
+            <div class="grid-container">
+                <div class="grid-column">
+                    <!-- Input fields -->
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.IdDv" class="control-label"></label>
+                        <input asp-for="QuanSoModel.IdDv" type="text" name="IdDv" class="form-control" value="@User.Identity.Name" readonly />
+                        <span asp-validation-for="QuanSoModel.IdDv" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.TongQs" class="control-label"></label>
+                        <input asp-for="QuanSoModel.TongQs" name="TongQS" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.TongQs" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.QsVang" class="control-label"></label>
+                        <input asp-for="QuanSoModel.QsVang" name="QsVang" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.QsVang" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DaoNgu" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DaoNgu" type="number" name="DaoNgu" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DaoNgu" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiVien" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiVien" type="number" name="DiVien" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiVien" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.BenhXa" class="control-label"></label>
+                        <input asp-for="QuanSoModel.BenhXa" type="number" name = "BenhXa" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.BenhXa" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiHoc" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiHoc" type="number" name="DiHoc" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiHoc" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="grid-column">
+                    <!-- Remaining Input fields -->
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiThucTe" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiThucTe" type="number" name="DiThucTe" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiThucTe" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiThucTap" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiThucTap" type="number" name="DiThucTap" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiThucTap" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiTt" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiTt" type="number"  name="DiTt" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiTt" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiCtac" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiCtac" type="number" name="DiCtac" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiCtac" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.ThaiSan" class="control-label"></label>
+                        <input asp-for="QuanSoModel.ThaiSan" type="number" name="ThaiSan" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.ThaiSan" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.LyDoKhac" class="control-label"></label>
+                        <input asp-for="QuanSoModel.LyDoKhac" type="text" name="LyDoKhac" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.LyDoKhac" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.ChuThich" class="control-label"></label>
+                        <input asp-for="QuanSoModel.ChuThich" type="text" name="ChuThich" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.ChuThich" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- Additional input fields -->
+            <div class="form-group">
+                <input asp-for="THDVModel.IdDv" name="IdDv" value="@User.Identity.Name" hidden />
+                <div class="form-group">
+                    <label asp-for="THDVModel.TenTB" class="control-label"></label>
+                    <input asp-for="THDVModel.TenTB" type="text" name="TenTB" class="form-control" />
+                    <span asp-validation-for="THDVModel.TenTB" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="THDVModel.Nvvs" class="control-label"></label>
+                    <input asp-for="THDVModel.Nvvs" type="text" name="Nvvs" class="form-control" />
+                    <span asp-validation-for="THDVModel.Nvvs" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="THDVModel.CanhGac" class="control-label"></label>
+                    <input asp-for="THDVModel.CanhGac" type="text" name="CanhGac" class="form-control" />
+                    <span asp-validation-for="THDVModel.CanhGac" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="THDVModel.GhiChu" class="control-label"></label>
+                    <textarea asp-for="THDVModel.GhiChu" name="GhiChu" class="form-control"></textarea>
+                    <span asp-validation-for="THDVModel.GhiChu" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- Buttons -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <button asp-action="Return" type="submit" class="btn btn-secondary">Xem lại</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+
+

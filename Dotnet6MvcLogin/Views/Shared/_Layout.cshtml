@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css" rel="stylesheet">
+
+    <script defer src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script defer src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+    <script defer src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+    <script defer src="~/js/script.js"></script>
+
+    
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css">
+    <title>Báo cáo quân số và tình hình đơn vị </title>
+</head>
+
+<body>
+
+    <div class="container-custom">
+        <!-- Sidebar Section -->
+        <aside>
+            <div class="toggle">
+                <div class="logo">
+                    <img src="~/images/Logo_MTA.png">
+                    <h2><span class="danger">Trang chủ</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">
+                        close
+                    </span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="/TrangChu/Index">
+                    <span class="material-icons-sharp">
+                        home
+                    </span>
+                    <h3>Trang chủ</h3>
+                </a>
+                @if (User.IsInRole("admin"))
+                {
+                    
+                   
+                    <a href="/Admin/Index">
+                        <span class="material-icons-sharp">
+                            assignment_ind
+                        </span>
+                        <h3>Bảng quân số các đơn vị</h3>
+                    </a>
+                    <a href="/Admin/IndexTHDV">
+                        
+                        <span class="material-icons-sharp">
+                            event_note
+                        </span>
+                        <h3>Bảng tình hình các đơn vị </h3>
+                    </a>
+                    <a href="/Admin/DisplayDonVi">
+                        <span class="material-icons-sharp">
+                            assignment_ind
+                        </span>
+                        <h3>Bảng  đơn vị</h3>
+                    </a>
+                    <a href="/UserAuthentication/Registration">
+                        <span class="material-icons-sharp">
+                            add
+                        </span>
+                        <h3>Thêm tài khoản cho đơn vị mới</h3>
+                    </a>
+                    <a href="/Admin/AddDonVi">
+                        <span class="material-icons-sharp">
+                            add
+                        </span>
+                        <h3>Thêm đơn vị mới</h3>
+                    </a>
+                    <a href="/Admin/Display">
+                        <span class="material-icons-sharp">
+                            groups
+                        </span>
+                        <h3>Thông tin người dùng</h3>
+                    </a>
+
+
+                    <a href="/ThongKeRecord/Index">
+                        <span class="material-icons-sharp">
+                            insights
+                        </span>
+                        <h3>Thống kê</h3>
+                    </a>
+                    <a href="/Admin/History">
+                        <span class="material-icons-sharp">
+                            alarm
+                        </span>
+                        <h3>Lịch sử truy cập</h3>
+                    </a>
+                    <a href="/Admin/HistoryAction">
+                        <span class="material-icons-sharp">
+                            remove_red_eye
+                        </span>
+                        <h3>Lịch sử hành động</h3>
+                    </a>
+                    
+
+                }
+                @if (User.IsInRole("user"))
+                {
+                    <a href="/User/AddQuanSo">
+                        <span class="material-icons-sharp">
+                            assignment_ind
+                        </span>
+                        <h3>Nhập thông tin hàng ngày</h3>
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(User.Identity.Name))
+                {
+                    @* <a href="/UserAuthentication/Registration">
+                        <span class="material-icons-sharp">
+                            person_outline
+                        </span>
+                        <h3>Thông tin tài khoản</h3>
+                    </a> *@
+                    <a href="/UserAuthentication/Logout">
+                        <span class="material-icons-sharp">
+                            logout
+                        </span>
+                        <h3>Đăng xuất</h3>
+                    </a>
+
+                }
+            </div>
+        </aside>
+        <!-- End of Sidebar Section -->
+        <!-- Main Content -->
+        <main>
+           @*  <h1>Trang chủ </h1> *@
+            <!-- Analyses -->
+            <div class="analyse">
+            </div>
+            <div class="recent-orders">
+                <h2>Trang báo cáo quân số</h2>
+                <script src="~/lib/jquery/dist/jquery.min.js"> </script>
+                    
+                <!-- Card -->
+                
+                        @RenderBody()
+                       
+               
+                
+                
+
+            </div>
+            <!-- End of Recent Orders -->
+
+        </main>
+        <!-- End of Main Content -->
+        <!-- Right Section -->
+        <div class="right-section">
+            <div class="nav">
+                <button id="menu-btn">
+                    <!-- <span class="material-icons-sharp">
+                        menu
+                    </span> -->
+                </button>
+                <div class="dark-mode">
+                    <span class="material-icons-sharp active">
+                        light_mode
+                    </span>
+                    <span class="material-icons-sharp">
+                        dark_mode
+                    </span>
+                </div>
+
+                <div class="profile">
+                    <div class="info">
+                        <p>Xin chào, <b>@User.Identity.Name</b></p>
+                       
+                    </div>
+                    <div class="profile-photo">
+                        @* <img src="images/profile-1.jpg"> *@
+                    </div>
+                </div>
+
+                
+
+            </div>
+            <!-- End of Nav -->
+        </div>
+        
+
+
+    </div>
+
+    @* <script src="orders.js"></script> *@
+    <script src="~/js/index.js"></script>
+    <script src="~/js/show.js"></script>
+    <script src="~/js/datetime.js"></script>
+
+
+    <div class="container">
+    </div>
+    @RenderSection("scripts", required: false)
+    @RenderSection("head", required: false)
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+﻿@model MvcLogin.Models.QuanSo
+@using Dotnet6MvcLogin.Models.DTO;
+@using Dotnet6MvcLogin.Repositories.Abstract;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Mvc;
+
+@using MvcLogin.Models;
+
+
+
+
+
+
+<body>
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success">@TempData["success"]</div>
+    }
+
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["error"]</div>
+    }
+    <div class="contact-container">
+
+        <form asp-action="EditNew" class="contact-left">
+            @* <input type="text" name="IDdv" placeholder="IDdv" class="contact-inputs" required>
+            <input type="email" name="Ngay" placeholder="Ngay" class="contact-inputs" required>
+            <input type="text" name="Tổng quân số" placeholder="Tổng quân số" class="contact-inputs" required>
+            <input type="email" name="Quân số vắng" placeholder="Quân số vắng" class="contact-inputs" required>
+            <input type="text" name="Đào ngũ" placeholder="Đào ngũ" class="contact-inputs" required>
+            <input type="email" name="Đi viện" placeholder="Đi viện" class="contact-inputs" required>
+            <input type="text" name="Đi bệnh xá" placeholder="Đi bệnh xá" class="contact-inputs" required>
+            <input type="text" name="Đi học" placeholder="Đi học" class="contact-inputs" required>
+            <input type="email" name="Đi thực tê" placeholder="Đi thực tê" class="contact-inputs" required>
+            <input type="text" name="Thực tập" placeholder="Thực tập" class="contact-inputs" required>
+            <input type="email" name="Đi tranh thủ" placeholder="Đi tranh thủ" class="contact-inputs" required>
+            <input type="text" name="Đi công tác" placeholder="Đi công tác" class="contact-inputs" required>
+            <input type="email" name="Thai sản" placeholder="Thai sản" class="contact-inputs" required>
+            <input type="text" name="Lý do khác" placeholder="Lý do khác" class="contact-inputs" required>
+            <input type="email" name="Chú thích" placeholder="Chú thích" class="contact-inputs" required> *@
+            <div class="grid-container">
+                <div class="grid-column">
+                    <input asp-for="IdDv" type="text" name="IDdv" placeholder="IDdv" class="contact-inputs" >
+                    <input asp-for="Ngay" type="text" name="Ngay" placeholder="Ngay" class="contact-inputs">
+                    <input asp-for="TongQs" type="text" name="TongQs" placeholder="Tổng quân số" class="contact-inputs">
+                    <input asp-for="QsVang" type="text" name="QsVang" placeholder="Quân số vắng" class="contact-inputs">
+                    <input asp-for="DaoNgu" type="text" name="DaoNgu" placeholder="Đào ngũ" class="contact-inputs">
+                    <input asp-for="DiVien" type="text" name="DiVien" placeholder="Đi viện" class="contact-inputs">
+                    <input asp-for="BenhXa" type="text" name="BenhXa" placeholder="Đi bệnh xá" class="contact-inputs">
+                    <input asp-for="ChuThich" type="message" name="ChuThich" placeholder="Chú thích" class="contact-inputs">
+
+                </div>
+                <div class="grid-column">
+                    <input asp-for="DiHoc" type="text" name="DiHoc" placeholder="Đi học" class="contact-inputs">
+                    <input asp-for="DiThucTe" type="text" name="DiThucTe" placeholder="Đi thực tế" class="contact-inputs">
+                    <input asp-for="DiThucTap" type="text" name="DiThucTap" placeholder="Thực tập" class="contact-inputs">
+                    <input asp-for="DiTt" type="text" name="DiTt" placeholder="Đi tranh thủ" class="contact-inputs">
+                    <input asp-for="DiCtac" type="text" name="DiCtac" placeholder="Đi công tác" class="contact-inputs">
+                    <input asp-for="ThaiSan" type="text" name="ThaiSan" placeholder="Thai sản" class="contact-inputs">
+                    <input asp-for="LyDoKhac" type="text" name="LyDoKhac" placeholder="Lý do khác" class="contact-inputs">
+                </div>
+
+            </div>
+
+
+            <button type="submit">Lưu </button>
+
+        </form>
+    </div>
+</body>
+
+
+<link rel="stylesheet" href="~/css/nhapqs.css">
+

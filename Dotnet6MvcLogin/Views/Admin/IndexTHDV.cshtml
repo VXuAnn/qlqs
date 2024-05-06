@@ -1,0 +1,89 @@
+﻿@using MvcLogin.Models
+@model IEnumerable<THDV>
+
+<form method="get" asp-action="IndexTHDV">
+    <div class="form-group">
+        <label for="ngay">Ngày:</label>
+        <input type="date" class="form-control" id="ngay" name="ngay" />
+    </div>
+    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+</form>
+
+
+
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            @* <th>
+            @Html.DisplayNameFor(model => model.IdBcqs)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.IdDv)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TenTB)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nvvs)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CanhGac)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GhiChu)
+            </th>
+            <th>
+
+            </th>
+
+        </tr>
+    </thead>
+    
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.IdBcqs)
+            </td> *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdDv)
+                </td>
+                <td class="date-format">
+                    @Html.DisplayFor(modelItem => item.Ngay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenTB)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nvvs)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CanhGac)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GhiChu)
+                </td>
+
+                <td>
+
+                    <a asp-action="EditTHDV" asp-route-Id="@item.IdDv"><i class="bi bi-pen">Sửa</i></a>
+
+                   
+
+                </td>
+            </tr>
+        }
+
+    </tbody>
+   
+</table>
+<a href="#">Hiển thị thêm</a>
+
+
+
+

@@ -1,0 +1,106 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit';
+}
+
+.contact-container {
+    /*.contact-container {
+   
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}*/
+
+    .contact-left
+
+{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+}
+
+.contact-left-tiltle h2 {
+    font-weight: 600;
+    color: #a363aa;
+    font: size 40px;
+    margin-bottom: 5px;
+}
+
+.contact-left-tiltle hr {
+    border: none;
+    width: 120px;
+    height: 5px;
+    background-color: #a363aa;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.contact-inputs {
+    width: 400px;
+    height: 50px;
+    border: none;
+    outline: none;
+    padding-left: 25px;
+    font-weight: 500;
+    color: #666;
+    border-radius: 50px;
+    margin-bottom: 30px;
+}
+
+.contact-left textarea {
+    height: 140;
+    padding-top: 15px;
+    border-radius: 20px;
+}
+
+.contact-inputs:focus {
+    border: 2px solid #ff994f;
+}
+
+.contact-inputs::placeholder {
+    color: #a9a9a9;
+}
+
+.contact-left button {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    font-size: 16px;
+    color: #fff;
+    gap: 30px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(270deg,#ff994f,#fa6d86);
+    cursor: pointer;
+}
+
+    .contact-left button img {
+        height: 15px;
+    }
+
+.contact-right img {
+    width: 500px;
+}
+
+.input-bold-placeholder::placeholder {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 0fr);
+    grid-gap: 1px;
+}
+
+.grid-column {
+    display: grid;
+    grid-template-columns: repeat(2, 2fr);  //Chỉ có một cột trong mỗi phần 
+}

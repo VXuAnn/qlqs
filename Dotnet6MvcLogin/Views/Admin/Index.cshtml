@@ -1,0 +1,158 @@
+﻿@using MvcLogin.Models
+
+@model IEnumerable<QuanSo>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="/js/xuatexcel.js"></script>
+<div style="display: flex; justify-content: space-around;">
+    <form method="get" asp-action="Index">
+        <div class="form-group">
+            <label for="ngay">Ngày:</label>
+            <input type="date" class="form-control" id="ngay" name="ngay" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 32px;">Tìm kiếm</button>
+    </form>
+   
+
+    <form method="post" asp-action="SetHours">
+        <div class="form-group">
+            <label for="startHour">Start Hour:</label>
+            <input type="time" class="form-control" id="startHour" name="start" />
+        </div>
+        <div class="form-group">
+            <label for="endHour">End Hour:</label>
+            <input type="time" class="form-control" id="endHour" name="end" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 32px;">Thiết lập</button>
+    </form>
+    <form method="get" asp-action="ExportToExcel">
+        <div class="form-group">
+            <label for="ngayf">Ngày:</label>
+            <input type="date" class="form-control" id="ngayf" name="ngay" />
+        </div>
+        <button type="button" class="btn btn-primary" style="margin-top: 32px;" onclick="exportToExcel()">Xuất excel</button>
+
+    </form>
+   
+</div>
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdDv)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ngay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TongQs)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QsVang)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DaoNgu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiVien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BenhXa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiHoc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiThucTe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiThucTap)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiTt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiCtac)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ThaiSan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LyDoKhac)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChuThich)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdDv)
+                </td>
+                <td class="date-format">
+                    @Html.DisplayFor(modelItem => item.Ngay)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TongQs)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QsVang)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DaoNgu)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiVien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BenhXa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiHoc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiThucTe)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiThucTap)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiTt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiCtac)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThaiSan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LyDoKhac)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChuThich)
+                </td>
+                <td>
+
+                    <a asp-action="Edit" asp-route-Id="@item.IdDv"><i class="bi bi-pen">Sửa</i></a>
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+           
+        </tr>
+    </tfoot>
+   
+</table>
+<a href="#">Hiển thị thêm</a>
+
+

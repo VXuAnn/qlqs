@@ -1,0 +1,59 @@
+﻿@using MvcLogin.Models
+@model IEnumerable<Combinecs>
+
+<form method="get" action="HistoryAction">
+    <label for="id_dv">Division ID:</label>
+    <input type="text" id="id_dv" name="id_dv" placeholder="Enter Division ID">
+    <button type="submit">Search</button>
+</form>
+<form method="get" asp-action="HistoryAction">
+    <div class="form-group">
+        <label for="ngay">Ngày:</label>
+        <input type="date" class="form-control" id="ngay" name="ngay" />
+    </div>
+    <button type="submit" class="btn btn-primary">Searcg</button>
+</form>
+
+<table id="example" class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+
+            <th>
+                "Đơn vị"
+
+            </th>
+            <th>
+                Hành động
+
+            </th>
+            <th>
+                Thời gian sử dụng
+
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.IdBcqs)
+            </td> *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Uname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastAction)
+                </td>
+                <td class="date-formattt">
+                    @Html.DisplayFor(modelItem => item.LastActionTime)
+                </td>
+
+
+
+            </tr>
+        }
+    </tbody>
+</table>
