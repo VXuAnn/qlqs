@@ -14,6 +14,16 @@ namespace MvcLogin.Controllers
         {
             _workingHoursService = workingHoursService;
         }
+
+        #region xem quân số đơn vị
+        public IActionResult Index()
+        {
+            List<QuanSo> quanSos = new List<QuanSo>();
+            RepoUser user = new RepoUser();
+            quanSos = user.GetBaoCaoQuanSoByIddv(User.Identity.Name);
+            return View(quanSos);
+        }
+        #endregion
         #region Thêm quân số
         public ActionResult AddQuanSo()
         {

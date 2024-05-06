@@ -113,6 +113,56 @@ namespace MvcLogin.Repositories
         }
         #endregion
 
+        #region xem quân số của đơn vị
+        public List<QuanSo> GetBaoCaoQuanSoByIddv(string IdDv)
+        {
+            List<QuanSo> qs = new List<QuanSo>();
+
+            SqlCommand cmd = new SqlCommand("getBaoCaoQuanSoById", _connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@id_dv", IdDv);
+
+
+
+
+
+            SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            dataAdapter.Fill(dt);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                qs.Add(new QuanSo
+                {
+
+
+
+
+                    IdDv = dr["id_dv"] != DBNull.Value ? Convert.ToString(dr["id_dv"]) : string.Empty,
+                    Ngay = dr["ngay"] != DBNull.Value ? Convert.ToDateTime(dr["ngay"]) : (DateTime?)null,
+                    TongQs = dr["tong_qs"] != DBNull.Value ? Convert.ToInt32(dr["tong_qs"]) : (int?)null,
+                    QsVang = dr["qs_vang"] != DBNull.Value ? Convert.ToInt32(dr["qs_vang"]) : (int?)null,
+                    DaoNgu = dr["dao_ngu"] != DBNull.Value ? Convert.ToInt32(dr["dao_ngu"]) : (int?)null,
+                    DiVien = dr["di_vien"] != DBNull.Value ? Convert.ToInt32(dr["di_vien"]) : (int?)null,
+                    BenhXa = dr["benh_xa"] != DBNull.Value ? Convert.ToInt32(dr["benh_xa"]) : (int?)null,
+                    DiHoc = dr["di_hoc"] != DBNull.Value ? Convert.ToInt32(dr["di_hoc"]) : (int?)null,
+                    DiThucTe = dr["di_thuc_te"] != DBNull.Value ? Convert.ToInt32(dr["di_thuc_te"]) : (int?)null,
+                    DiThucTap = dr["di_thuc_tap"] != DBNull.Value ? Convert.ToInt32(dr["di_thuc_tap"]) : (int?)null,
+                    DiTt = dr["di_tt"] != DBNull.Value ? Convert.ToInt32(dr["di_tt"]) : (int?)null,
+                    DiCtac = dr["di_ctac"] != DBNull.Value ? Convert.ToInt32(dr["di_ctac"]) : (int?)null,
+                    ThaiSan = dr["thai_san"] != DBNull.Value ? Convert.ToInt32(dr["thai_san"]) : (int?)null,
+                    LyDoKhac = dr["ly_do_khac"] != DBNull.Value ? Convert.ToInt32(dr["ly_do_khac"]) : (int?)null,
+                    ChuThich = dr["chu_thich"] != DBNull.Value ? Convert.ToString(dr["chu_thich"]) : string.Empty
+
+                });
+            }
+
+            return qs;
+
+        }
+        #endregion
+
 
         #region thêm quân số
         public bool AddQuanSo(QuanSo qs, THDV thdv)
