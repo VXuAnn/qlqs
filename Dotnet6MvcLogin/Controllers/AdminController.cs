@@ -13,17 +13,15 @@ namespace Dotnet6MvcLogin.Controllers
     [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
+        #region giới hạn thời gian
         public TimeSpan startHour;
         public TimeSpan endHour;
         private readonly Time _workingHoursService;
-        
 
         public AdminController(Time workingHoursService)
         {
             _workingHoursService = workingHoursService;
         }
-
-       
         public ActionResult SetHours(TimeSpan start, TimeSpan end)
         {
 
@@ -31,8 +29,7 @@ namespace Dotnet6MvcLogin.Controllers
 
             _workingHoursService.startHour = start;
             _workingHoursService.endHour = end;
-            System.Console.WriteLine(start);
-            System.Console.WriteLine(end);
+
 
             return RedirectToAction("Index", "Admin"); // Chuyển hướng đến trang chủ hoặc trang khác
         }
@@ -46,70 +43,11 @@ namespace Dotnet6MvcLogin.Controllers
         {
             return endHour;
         }
-        [HttpPost]
-        public IActionResult ExportToExcel(DateTime? ngay)
-        {
-            DateTime dateToExport = ngay ?? DateTime.Now; // Sử dụng ngày hiện tại nếu không có ngày được chọn từ người dùng
-
-            RepoAdmin repoAdmin = new RepoAdmin();
-            DataTable dataTable = repoAdmin.GetBaoCaoQuanSoData(dateToExport);
-
-            // Danh sách các tên cột bạn muốn hiển thị
-            string[] columnNames = {
-        "Đơn vị ",
-        "Ngày",
-        "Tổng quân số",
-        "Quân số vắng",
-        "Đào ngũ",
-        "Đi viện",
-        "Bệnh xá",
-        "Đi học",
-        "Đi thực tế",
-        "Đi thực tập",
-        "Tranh thủ",
-        "Đi công tác",
-        "Thai sản",
-        "Lý do khác",
-        "Chú thích"
-    };
-
-            byte[] fileContents;
-            using (var package = new ExcelPackage())
-            {
-                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
-
-                // Thêm các tên cột vào file Excel
-                for (int i = 1; i < columnNames.Length+1; i++) // Bắt đầu từ i = 1
-                {
-                    worksheet.Cells[1, i].Value = columnNames[i - 1];
-                }
-
-                // Thêm dữ liệu từ DataTable vào bảng Excel
-                for (int i = 0; i < dataTable.Rows.Count; i++)
-                {
-                    for (int j = 1; j < dataTable.Columns.Count; j++) // Bắt đầu từ j = 1
-                    {
-                        var value = dataTable.Rows[i][j];
-                        if (dataTable.Columns[j].DataType == typeof(DateTime))
-                        {
-                            // Nếu ô chứa ngày, định dạng lại định dạng ngày
-                            worksheet.Cells[i + 2, j].Value = value;
-                            worksheet.Cells[i + 2, j].Style.Numberformat.Format = "dd/MM/yyyy";
-                        }
-                        else
-                        {
-                            worksheet.Cells[i + 2, j].Value = value;
-                        }
-                    }
-                }
-
-                fileContents = package.GetAsByteArray();
-            }
-
-            return File(fileContents, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"QuanSo_{dateToExport.ToString("yyyyMMdd")}.xlsx");
-        }
 
 
+        #endregion
+
+        #region Xem người dùng
         public IActionResult Display(string id_dv)
         {
             List<Users> users = new List<Users>();
@@ -132,6 +70,9 @@ namespace Dotnet6MvcLogin.Controllers
             }
             return View(users);
         }
+        #endregion
+
+        #region  Xem Quân Số
         public IActionResult Index(DateTime? ngay)
         {
             List<QuanSo> quanSos = new List<QuanSo>();
@@ -157,12 +98,54 @@ namespace Dotnet6MvcLogin.Controllers
 
             return View(quanSos);
         }
+        #endregion
 
-        public IActionResult Search(DateTime ngay)
+        #region Xem đơn vị
+        public IActionResult DisplayDonVi()
         {
-            return RedirectToAction("Index", new { ngay });
-        }
+            List<DonVi> users = new List<DonVi>();
 
+
+            RepoAdmin quanlyUser = new RepoAdmin();
+
+            users = quanlyUser.GetDonVi();
+
+
+
+
+            return View(users);
+        }
+        #endregion
+
+        #region Xem THDV
+        public IActionResult IndexTHDV(DateTime? ngay)
+        {
+            List<THDV> quanSos = new List<THDV>();
+
+            try
+            {
+                RepoAdmin admin = new RepoAdmin(); // Tạo mới một đối tượng QuanLyQuanSo
+
+                if (ngay.HasValue)
+                {
+                    quanSos = admin.GetTHDV(ngay.Value);
+                }
+                else
+                {
+                    // Sử dụng DateTime.MinValue để đại diện cho giá trị null
+                    quanSos = admin.GetTHDV(DateTime.Now);
+                }
+            }
+            catch
+            {
+                // Xử lý nếu có lỗi xảy ra khi tạo đối tượng QuanLyQuanSo hoặc khi gọi phương thức SearchQuanSoByDate hoặc GetBaoCaoQuanSo
+            }
+
+            return View(quanSos);
+        }
+        #endregion
+
+        #region Xem lịch sử đăng nhập
         public IActionResult History(DateTime? ngay, string? name)
         {
             List<LoginHistory> users = new List<LoginHistory>();
@@ -187,7 +170,43 @@ namespace Dotnet6MvcLogin.Controllers
 
             return View(users);
         }
+        #endregion
 
+        #region Xem lịch sử hành động của người dùng
+        public IActionResult HistoryAction(DateTime? ngay, string? id_dv)
+        {
+            List<Combinecs> users = new List<Combinecs>();
+            try
+            {
+
+                RepoAdmin quanlyUser = new RepoAdmin();
+                if (ngay.HasValue)
+                {
+                    users = quanlyUser.SearchHisoryActDate(ngay.Value);
+                }
+                else if (id_dv != null)
+                {
+                    users = quanlyUser.SearchHisoryActID(id_dv);
+                }
+                else
+                {
+                    users = quanlyUser.SearchHisoryActDate(DateTime.Now);
+                }
+            }
+            catch { }
+
+            return View(users);
+        }
+        #endregion
+
+        #region Tìm Kiếm
+        public IActionResult Search(DateTime ngay)
+        {
+            return RedirectToAction("Index", new { ngay });
+        }
+        #endregion
+
+        #region Sửa thông tin quân số
         public ActionResult Edit(string id)
         {
             QuanSo users = new QuanSo();
@@ -237,58 +256,9 @@ namespace Dotnet6MvcLogin.Controllers
 
             return View("Edit"); // T
         }
+        #endregion
 
-        public IActionResult IndexTHDV(DateTime? ngay)
-        {
-            List<THDV> quanSos = new List<THDV>();
-
-            try
-            {
-                RepoAdmin admin = new RepoAdmin(); // Tạo mới một đối tượng QuanLyQuanSo
-
-                if (ngay.HasValue)
-                {
-                    quanSos = admin.GetTHDV(ngay.Value);
-                }
-                else
-                {
-                    // Sử dụng DateTime.MinValue để đại diện cho giá trị null
-                    quanSos = admin.GetTHDV(DateTime.Now);
-                }
-            }
-            catch
-            {
-                // Xử lý nếu có lỗi xảy ra khi tạo đối tượng QuanLyQuanSo hoặc khi gọi phương thức SearchQuanSoByDate hoặc GetBaoCaoQuanSo
-            }
-
-            return View(quanSos);
-        }
-
-        public IActionResult HistoryAction(DateTime? ngay, string? id_dv)
-        {
-            List<Combinecs> users = new List<Combinecs>();
-            try
-            {
-
-                RepoAdmin quanlyUser = new RepoAdmin();
-                if (ngay.HasValue)
-                {
-                    users = quanlyUser.SearchHisoryActDate(ngay.Value);
-                }
-                else if (id_dv != null)
-                {
-                    users = quanlyUser.SearchHisoryActID(id_dv);
-                }
-                else
-                {
-                    users = quanlyUser.SearchHisoryActDate(DateTime.Now);
-                }
-            }
-            catch { }
-
-            return View(users);
-        }
-
+        #region Sửa thông tin Tình hình đơn vị
         public ActionResult EditTHDV(string id)
         {
             THDV users = new THDV();
@@ -329,7 +299,9 @@ namespace Dotnet6MvcLogin.Controllers
 
             return View("EditTHDV"); // T
         }
+        #endregion
 
+        #region Thêm đơn vị
         public ActionResult AddDonVi()
         {
             return View();
@@ -371,20 +343,72 @@ namespace Dotnet6MvcLogin.Controllers
 
             return View("AddDonVi"); // Thêm này nếu có lỗi xảy ra và không thể xử lý được
         }
-        public IActionResult DisplayDonVi()
+        #endregion
+
+        #region Xuất file excel
+        [HttpPost]
+        public IActionResult ExportToExcel(DateTime? ngay)
         {
-            List<DonVi> users = new List<DonVi>();
+            DateTime dateToExport = ngay ?? DateTime.Now; // Sử dụng ngày hiện tại nếu không có ngày được chọn từ người dùng
 
+            RepoAdmin repoAdmin = new RepoAdmin();
+            DataTable dataTable = repoAdmin.GetBaoCaoQuanSoData(dateToExport);
 
-            RepoAdmin quanlyUser = new RepoAdmin();
+            // Danh sách các tên cột bạn muốn hiển thị
+            string[] columnNames = {
+        "Đơn vị ",
+        "Ngày",
+        "Tổng quân số",
+        "Quân số vắng",
+        "Đào ngũ",
+        "Đi viện",
+        "Bệnh xá",
+        "Đi học",
+        "Đi thực tế",
+        "Đi thực tập",
+        "Tranh thủ",
+        "Đi công tác",
+        "Thai sản",
+        "Lý do khác",
+        "Chú thích"
+    };
 
-            users = quanlyUser.GetDonVi();
+            byte[] fileContents;
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
 
+                // Thêm các tên cột vào file Excel
+                for (int i = 1; i < columnNames.Length + 1; i++) // Bắt đầu từ i = 1
+                {
+                    worksheet.Cells[1, i].Value = columnNames[i - 1];
+                }
 
+                // Thêm dữ liệu từ DataTable vào bảng Excel
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    for (int j = 1; j < dataTable.Columns.Count; j++) // Bắt đầu từ j = 1
+                    {
+                        var value = dataTable.Rows[i][j];
+                        if (dataTable.Columns[j].DataType == typeof(DateTime))
+                        {
+                            // Nếu ô chứa ngày, định dạng lại định dạng ngày
+                            worksheet.Cells[i + 2, j].Value = value;
+                            worksheet.Cells[i + 2, j].Style.Numberformat.Format = "dd/MM/yyyy";
+                        }
+                        else
+                        {
+                            worksheet.Cells[i + 2, j].Value = value;
+                        }
+                    }
+                }
 
+                fileContents = package.GetAsByteArray();
+            }
 
-            return View(users);
+            return File(fileContents, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"QuanSo_{dateToExport.ToString("yyyyMMdd")}.xlsx");
         }
+        #endregion
     }
 }
 

@@ -10,15 +10,18 @@ namespace MvcLogin.Repositories
 {
     public class RepoUser
     {
+        #region kết nối csdl
         private SqlConnection _connection;
 
         public RepoUser()
         {
-            string connStr = "Data Source=VUAN;Initial Catalog=QLQS2;Persist Security Info=True;User ID=sa;Password=123;Trust Server Certificate=True";
+            string connStr = "Data Source=LUCKYBOI;Initial Catalog=login;Persist Security Info=True; Integrated Security=True;Trust Server Certificate=True";
 
             _connection = new SqlConnection(connStr);
         }
+        #endregion
 
+        #region xem lại dữ liệu nhập
         public Combinecs GetBaoCaoQuanSoById(string IdDv)
         {
             Combinecs combinedData = new Combinecs(); // Tạo một đối tượng mới để chứa cả QuanSo và THDV
@@ -108,10 +111,10 @@ namespace MvcLogin.Repositories
 
             return combinedData;
         }
+        #endregion
 
 
-
-
+        #region thêm quân số
         public bool AddQuanSo(QuanSo qs, THDV thdv)
         {
             //SqlCommand cmd = new SqlCommand("AddQuanSo", _connection);
@@ -169,6 +172,10 @@ namespace MvcLogin.Repositories
                 }
             }
         }
+
+        #endregion
+
+        #region kiểm tra tồn tại ngày
         // Phương thức isExistingRecord sẽ nhận một tham số là ngày cần kiểm tra
         public bool isExistingRecord(DateTime ngay, string id)
         {
@@ -191,51 +198,10 @@ namespace MvcLogin.Repositories
             // Return true if there is at least one record for the specified date
             return recordExists;
         }
+        #endregion
 
-
-        public QuanSo ReturnQuanSo(DateTime ngay, string id)
-        {
-            QuanSo listQuanSo = new QuanSo();
-
-            SqlCommand cmd = new SqlCommand("getBaoCaoQuanSoByDateAndId", _connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@ngay", ngay);
-            cmd.Parameters.AddWithValue("@iddv", id);
-
-
-
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            dataAdapter.Fill(dt);
-
-            foreach (DataRow dr in dt.Rows)
-            {
-                listQuanSo = new QuanSo
-                {
-                    IdBcqs = Convert.ToInt32(dr["id_bcqs"]),
-                    IdDv = dr["id_dv"] != DBNull.Value ? Convert.ToString(dr["id_dv"]) : string.Empty,
-                    Ngay = dr["ngay"] != DBNull.Value ? Convert.ToDateTime(dr["ngay"]) : (DateTime?)null,
-                    TongQs = dr["tong_qs"] != DBNull.Value ? Convert.ToInt32(dr["tong_qs"]) : (int?)null,
-                    QsVang = dr["qs_vang"] != DBNull.Value ? Convert.ToInt32(dr["qs_vang"]) : (int?)null,
-                    DaoNgu = dr["dao_ngu"] != DBNull.Value ? Convert.ToInt32(dr["dao_ngu"]) : (int?)null,
-                    DiVien = dr["di_vien"] != DBNull.Value ? Convert.ToInt32(dr["di_vien"]) : (int?)null,
-                    BenhXa = dr["benh_xa"] != DBNull.Value ? Convert.ToInt32(dr["benh_xa"]) : (int?)null,
-                    DiHoc = dr["di_hoc"] != DBNull.Value ? Convert.ToInt32(dr["di_hoc"]) : (int?)null,
-                    DiThucTe = dr["di_thuc_te"] != DBNull.Value ? Convert.ToInt32(dr["di_thuc_te"]) : (int?)null,
-                    DiThucTap = dr["di_thuc_tap"] != DBNull.Value ? Convert.ToInt32(dr["di_thuc_tap"]) : (int?)null,
-                    DiTt = dr["di_tt"] != DBNull.Value ? Convert.ToInt32(dr["di_tt"]) : (int?)null,
-                    DiCtac = dr["di_ctac"] != DBNull.Value ? Convert.ToInt32(dr["di_ctac"]) : (int?)null,
-                    ThaiSan = dr["thai_san"] != DBNull.Value ? Convert.ToInt32(dr["thai_san"]) : (int?)null,
-                    LyDoKhac = dr["ly_do_khac"] != DBNull.Value ? Convert.ToInt32(dr["ly_do_khac"]) : (int?)null,
-                    ChuThich = dr["chu_thich"] != DBNull.Value ? Convert.ToString(dr["chu_thich"]) : string.Empty
-                };
-            }
-
-            return listQuanSo;
-        }
-
-        public bool EditQuanSo( QuanSo qs, THDV thdv)
+        #region sửa lại quân số
+        public bool EditQuanSo(QuanSo qs, THDV thdv)
         {
             using (SqlCommand cmd = new SqlCommand("updateBaoCaoQuanSo", _connection))
             {
@@ -290,8 +256,12 @@ namespace MvcLogin.Repositories
                 }
             }
 
-           
+
         }
+
+        #endregion
+
+        #region thêm lịch sử hành động
         public bool addCombinces(Combinecs c)
         {
             SqlCommand cmd = new SqlCommand("insertHisAct", _connection);
@@ -302,7 +272,7 @@ namespace MvcLogin.Repositories
             cmd.Parameters.AddWithValue("@id_dv", c.Uname != null ? c.Uname : DBNull.Value);
             cmd.Parameters.AddWithValue("@Ltime", c.LastActionTime != null ? c.LastActionTime : DBNull.Value);
             cmd.Parameters.AddWithValue("@Laction", c.LastAction != null ? c.LastAction : DBNull.Value);
-            
+
 
             _connection.Open();
 
@@ -316,6 +286,7 @@ namespace MvcLogin.Repositories
             else
             { return false; }
         }
+        #endregion
     }
 }
 
