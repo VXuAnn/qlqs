@@ -10,6 +10,7 @@ namespace MvcLogin.Models
         public string? IdDv { get; set; }
         [DisplayName("Ngày")]
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? Ngay { get; set; }
         [DisplayName("Tổng Quân số")]
         public int? TongQs { get; set; } 

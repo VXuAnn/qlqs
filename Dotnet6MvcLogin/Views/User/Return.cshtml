@@ -21,68 +21,123 @@
     {
         <div class="alert alert-danger">@TempData["error"]</div>
     }
+
+
     <div class="contact-container">
        
         <form asp-action="ReturnNew" class="contact-left">
-            @* <input type="text" name="IDdv" placeholder="IDdv" class="contact-inputs" required>
-            <input type="email" name="Ngay" placeholder="Ngay" class="contact-inputs" required>
-            <input type="text" name="Tổng quân số" placeholder="Tổng quân số" class="contact-inputs" required>
-            <input type="email" name="Quân số vắng" placeholder="Quân số vắng" class="contact-inputs" required>
-            <input type="text" name="Đào ngũ" placeholder="Đào ngũ" class="contact-inputs" required>
-            <input type="email" name="Đi viện" placeholder="Đi viện" class="contact-inputs" required>
-            <input type="text" name="Đi bệnh xá" placeholder="Đi bệnh xá" class="contact-inputs" required>
-            <input type="text" name="Đi học" placeholder="Đi học" class="contact-inputs" required>
-            <input type="email" name="Đi thực tê" placeholder="Đi thực tê" class="contact-inputs" required>
-            <input type="text" name="Thực tập" placeholder="Thực tập" class="contact-inputs" required>
-            <input type="email" name="Đi tranh thủ" placeholder="Đi tranh thủ" class="contact-inputs" required>
-            <input type="text" name="Đi công tác" placeholder="Đi công tác" class="contact-inputs" required>
-            <input type="email" name="Thai sản" placeholder="Thai sản" class="contact-inputs" required>
-            <input type="text" name="Lý do khác" placeholder="Lý do khác" class="contact-inputs" required>
-            <input type="email" name="Chú thích" placeholder="Chú thích" class="contact-inputs" required> *@
             <div class="grid-container">
                 <div class="grid-column">
-                    <input asp-for="QuanSoModel.IdDv" type="text" name="IDdv" placeholder="IDdv" class="contact-inputs" value="@User.Identity.Name" readonly />
-                     <input asp-for="QuanSoModel.Ngay" type="text" name="Ngay" placeholder="Ngay" class="contact-inputs">
-                    <input asp-for="QuanSoModel.TongQs" type="text" name="TongQs" placeholder="Tổng quân số" class="contact-inputs">
-                    <input asp-for="QuanSoModel.QsVang" type="text" name="QsVang" placeholder="Quân số vắng" class="contact-inputs">
-                    <input asp-for="QuanSoModel.DaoNgu" type="text" name="DaoNgu" placeholder="Đào ngũ" class="contact-inputs">
-                    <input asp-for="QuanSoModel.DiVien" type="text" name="DiVien" placeholder="Đi viện" class="contact-inputs">
-                    <input asp-for="QuanSoModel.BenhXa" type="text" name="BenhXa" placeholder="Đi bệnh xá" class="contact-inputs">
-                    <input asp-for="QuanSoModel.ChuThich" type="message" name="ChuThich" placeholder="Chú thích" class="contact-inputs">
-
+                    <!-- Input fields -->
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.IdDv" class="control-label"></label>
+                        <input asp-for="QuanSoModel.IdDv" type="text" name="IdDv" class="form-control" value="@User.Identity.Name" readonly />
+                        <span asp-validation-for="QuanSoModel.IdDv" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.TongQs" class="control-label"></label>
+                        <input asp-for="QuanSoModel.TongQs" name="TongQS" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.TongQs" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.QsVang" class="control-label"></label>
+                        <input asp-for="QuanSoModel.QsVang" name="QsVang" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.QsVang" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DaoNgu" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DaoNgu" type="number" name="DaoNgu" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DaoNgu" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiVien" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiVien" type="number" name="DiVien" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiVien" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.BenhXa" class="control-label"></label>
+                        <input asp-for="QuanSoModel.BenhXa" type="number" name="BenhXa" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.BenhXa" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiHoc" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiHoc" type="number" name="DiHoc" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiHoc" class="text-danger"></span>
+                    </div>
                 </div>
                 <div class="grid-column">
-                    <input asp-for="QuanSoModel.DiHoc" type="text" name="DiHoc" placeholder="Đi học" class="contact-inputs">
-                    <input asp-for="QuanSoModel.DiThucTe" type="text" name="DiThucTe" placeholder="Đi thực tế" class="contact-inputs">
-                    <input asp-for="QuanSoModel.DiThucTap" type="text" name="DiThucTap" placeholder="Thực tập" class="contact-inputs">
-                    <input asp-for="QuanSoModel.DiTt" type="text" name="DiTt" placeholder="Đi tranh thủ" class="contact-inputs">
-                    <input asp-for="QuanSoModel.DiCtac" type="text" name="DiCtac" placeholder="Đi công tác" class="contact-inputs">
-                    <input asp-for="QuanSoModel.ThaiSan" type="text" name="ThaiSan" placeholder="Thai sản" class="contact-inputs">
-                    <input asp-for="QuanSoModel.LyDoKhac" type="text" name="LyDoKhac" placeholder="Lý do khác" class="contact-inputs">
-                </div>
-                <div class="grid-column">
-                    <input asp-for="THDVModel.IdDv" value="@User.Identity.Name" hidden />
-                    @* <input asp-for="THDVModel.IdDv" type="text" name="IDdv" placeholder="IDdv" class="contact-inputs" value="@User.Identity.Name" readonly /> *@
-                     <input asp-for="THDVModel.Ngay" type="text" name="Ngay" placeholder="Ngay" class="contact-inputs">
-                    <input asp-for="THDVModel.TenTB" type="text" name="TenTB" placeholder="Tên trực ban" class="contact-inputs">
-                    @if (TempData["errorTB"] != null)
-                    {
-                        <div class="alert alert-danger">@TempData["error"]</div>
-                    }
-                    <input asp-for="THDVModel.Nvvs" type="text" name="Nvvs" placeholder="Nội vụ vệ sinh" class="contact-inputs">
-                    <input asp-for="THDVModel.CanhGac" type="text" name="CanhGac" placeholder="Canh gác" class="contact-inputs">
-                    <input asp-for="THDVModel.GhiChu" type="text" name="GhiChu" placeholder="Ghi chú" class="contact-inputs">
-
+                    <!-- Remaining Input fields -->
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiThucTe" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiThucTe" type="number" name="DiThucTe" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiThucTe" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiThucTap" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiThucTap" type="number" name="DiThucTap" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiThucTap" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiTt" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiTt" type="number" name="DiTt" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiTt" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.DiCtac" class="control-label"></label>
+                        <input asp-for="QuanSoModel.DiCtac" type="number" name="DiCtac" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.DiCtac" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.ThaiSan" class="control-label"></label>
+                        <input asp-for="QuanSoModel.ThaiSan" type="number" name="ThaiSan" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.ThaiSan" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.LyDoKhac" class="control-label"></label>
+                        <input asp-for="QuanSoModel.LyDoKhac" type="text" name="LyDoKhac" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.LyDoKhac" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuanSoModel.ChuThich" class="control-label"></label>
+                        <input asp-for="QuanSoModel.ChuThich" type="text" name="ChuThich" class="form-control" />
+                        <span asp-validation-for="QuanSoModel.ChuThich" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
-
-           
-            <button type="submit">Sửa </button>
+            <!-- Additional input fields -->
+            <div class="form-group">
+                <input asp-for="THDVModel.IdDv" name="IdDv" value="@User.Identity.Name" hidden />
+                <div class="form-group">
+                    <label asp-for="THDVModel.TenTB" class="control-label"></label>
+                    <input asp-for="THDVModel.TenTB" type="text" name="TenTB" class="form-control" />
+                    <span asp-validation-for="THDVModel.TenTB" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="THDVModel.Nvvs" class="control-label"></label>
+                    <input asp-for="THDVModel.Nvvs" type="text" name="Nvvs" class="form-control" />
+                    <span asp-validation-for="THDVModel.Nvvs" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="THDVModel.CanhGac" class="control-label"></label>
+                    <input asp-for="THDVModel.CanhGac" type="text" name="CanhGac" class="form-control" />
+                    <span asp-validation-for="THDVModel.CanhGac" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="THDVModel.GhiChu" class="control-label"></label>
+                    <textarea asp-for="THDVModel.GhiChu" name="GhiChu" class="form-control"></textarea>
+                    <span asp-validation-for="THDVModel.GhiChu" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- Buttons -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <button asp-action="Return" type="submit" class="btn btn-secondary">Xem lại</button>
+            </div>
 
         </form>
     </div>
 </body>
 
 
-<link rel="stylesheet" href="~/css/nhapqs.css">
+
 

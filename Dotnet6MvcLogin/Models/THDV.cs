@@ -21,6 +21,7 @@ namespace MvcLogin.Models
         
 
         [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? Ngay { get; set; }
       
     }
