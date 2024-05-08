@@ -7,6 +7,12 @@ using OfficeOpenXml;
 using System.Data;
 using System.IO;
 using System;
+/*using iText.Kernel.Pdf;*/
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+
+
+
 
 namespace Dotnet6MvcLogin.Controllers
 {
@@ -409,6 +415,105 @@ namespace Dotnet6MvcLogin.Controllers
             return File(fileContents, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"QuanSo_{dateToExport.ToString("yyyyMMdd")}.xlsx");
         }
         #endregion
+        [HttpPost]
+        public IActionResult ExportToPDF(DateTime? ngay)
+        {
+            DateTime dateToExport = ngay ?? DateTime.Now; // Sử dụng ngày hiện tại nếu không có ngày được chọn từ người dùng
+
+            RepoAdmin repoAdmin = new RepoAdmin();
+            DataTable dataTable = repoAdmin.GetBaoCaoQuanSoData(dateToExport);
+            List<string> columnOrder = new List<string>
+    {
+        "Don vi",
+        "Ngay",
+        "Tong quan so",
+        "Quan so vang",
+        "Dao ngu",
+        "Di vien",
+        "Benh xa",
+        "Di hoc",
+        "Di thuc te",
+        "Di thuc tap",
+        "Tranh thu",
+        "Di cong tac",
+        "Thai san",
+        "Ly do khac",
+        "Chu thich"
+        /*"Đơn vị ",
+        "Ngày",
+        "Tổng quân số",
+        "Quân số vắng",
+        "Đào ngũ",
+        "Đi viện",
+        "Bệnh xá",
+        "Đi học",
+        "Đi thực tế",
+        "Đi thực tập",
+        "Tranh thủ",
+        "Đi công tác",
+        "Thai sản",
+        "Lý do khác",
+        "Chú thích"*/
+    };
+
+            
+            Document document = new Document(PageSize.A4.Rotate());
+            MemoryStream memoryStream = new MemoryStream();
+            PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
+            document.SetMargins(20, 20, 20, 20);
+           
+
+            document.Open();
+
+            
+
+            PdfPTable table = new PdfPTable(columnOrder.Count);
+            float[] columnWidths = new float[columnOrder.Count];
+
+            // Thiết lập kích thước cho từng cột
+            for (int i = 0; i < columnOrder.Count; i++)
+            {
+                // Đặt kích thước mặc định cho các cột
+                columnWidths[i] = 200f; // Đổi giá trị này tùy thuộc vào kích thước mong muốn của từng cột
+
+                PdfPCell cell = new PdfPCell(new Phrase(columnOrder[i]));
+                cell.Rowspan = 3; // Cho phép nội dung của ô xuống dòng ở dòng tiếp theo
+                table.AddCell(cell);
+            }
+
+
+            // Thiết lập kích thước cho từng cột
+            table.SetWidths(columnWidths);
+
+            // Thêm dữ liệu từ DataTable vào bảng PDF
+            foreach (DataRow row in dataTable.Rows)
+            {
+                for (int i = 1; i < dataTable.Columns.Count; i++)
+                {
+                    object value = row[i]; // Lấy giá trị từ cột thứ i
+                    PdfPCell cell = new PdfPCell(new Phrase(value != null ? value.ToString() : ""));
+
+                    // Kiểm tra nếu giá trị là ngày thì định dạng lại
+                    if (value is DateTime)
+                    {
+                        cell.Phrase = new Phrase(((DateTime)value).ToString("dd/MM/yyyy"));
+                    }
+
+                    table.AddCell(cell);
+                }
+            }
+
+            document.Add(table);
+            document.Close();
+
+            byte[] fileContents = memoryStream.ToArray();
+
+            return File(fileContents, "application/pdf", $"QuanSo_{dateToExport.ToString("yyyyMMdd")}.pdf");
+
+
+        }
+
+
     }
 }
 
