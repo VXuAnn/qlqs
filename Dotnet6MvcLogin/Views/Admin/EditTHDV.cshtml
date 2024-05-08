@@ -41,12 +41,31 @@
             <input type="email" name="Chú thích" placeholder="Chú thích" class="contact-inputs" required> *@
             <div class="grid-container">
                 <div class="grid-column">
-                    <input asp-for="IdDv" type="text" name="IDdv" placeholder="IDdv" class="contact-inputs">
-                    <input asp-for="TenTB" type="text" name="TenTB" placeholder="Tên trực ban" class="contact-inputs">
-                    <input asp-for="Ngay" type="text" name="Ngay" placeholder="Ngay" class="contact-inputs">
-                    <input asp-for="Nvvs" type="text" name="Nvvs" placeholder="Nội vụ vệ sinh" class="contact-inputs">
-                    <input asp-for="CanhGac" type="text" name="CanhGac" placeholder="Canh gác" class="contact-inputs">
-                    <input asp-for="GhiChu" type="text" name="GhiChu" placeholder="Ghi chú" class="contact-inputs">
+                    <div class="form-group">
+                        <label asp-for="IdDv" class="control-label"></label>
+                        <input asp-for="IdDv" type="text" name="IdDv" class="form-control"  readonly />
+                        <span asp-validation-for="IdDv" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TenTB" class="control-label"></label>
+                        <input asp-for="TenTB" type="text" name="TenTB" class="form-control" />
+                        <span asp-validation-for="TenTB" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Nvvs" class="control-label"></label>
+                        <input asp-for="Nvvs" type="text" name="Nvvs" class="form-control" />
+                        <span asp-validation-for="Nvvs" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CanhGac" class="control-label"></label>
+                        <input asp-for="CanhGac" type="text" name="CanhGac" class="form-control" />
+                        <span asp-validation-for="CanhGac" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="GhiChu" class="control-label"></label>
+                        <textarea asp-for="GhiChu" name="GhiChu" class="form-control"></textarea>
+                        <span asp-validation-for="GhiChu" class="text-danger"></span>
+                    </div>
                     
 
                 </div>
@@ -62,5 +81,5 @@
 </body>
 
 
-<link rel="stylesheet" href="~/css/nhapqs.css">
+
 
