@@ -28,7 +28,7 @@
             <div class="toggle">
                 <div class="logo">
                     <img src="~/images/Logo_MTA.png">
-                    <h2><span class="danger">Trang chủ</span></h2>
+                    <h2 style="color: #FF0033; font-family: 'Times New Roman', Times, serif;">Trang chủ</h2>
                 </div>
                 <div class="close" id="close-btn">
                     <span class="material-icons-sharp">
@@ -125,17 +125,12 @@
                 }
                 @if (!string.IsNullOrEmpty(User.Identity.Name))
                 {
-                    @* <a href="/UserAuthentication/Registration">
-                        <span class="material-icons-sharp">
-                            person_outline
-                        </span>
-                        <h3>Thông tin tài khoản</h3>
-                    </a> *@
+                    
                     <a href="/UserAuthentication/Logout">
                         <span class="material-icons-sharp">
                             logout
                         </span>
-                        <h3>Đăng xuất</h3>
+                        <h3 >Đăng xuất</h3>
                     </a>
 
                 }
@@ -149,16 +144,13 @@
             <div class="analyse">
             </div>
             <div class="recent-orders">
-                <h2>Trang báo cáo quân số</h2>
+                <h1 style="color: #006699; font-family: 'Times New Roman', Times, serif;">Trang báo cáo quân số</h1>
                 <script src="~/lib/jquery/dist/jquery.min.js"> </script>
                     
                 <!-- Card -->
                 
                         @RenderBody()
-                       
-               
-                
-                
+
 
             </div>
             <!-- End of Recent Orders -->
