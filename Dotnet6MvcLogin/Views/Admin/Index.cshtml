@@ -170,4 +170,22 @@
 </table>
 
 
-
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('#btnSubmit').click(function () {
+                var data = [];
+                $('#example tbody tr').each(function () { // Sửa id của bảng
+                    var row = {};
+                    $(this).find('input, select').each(function () { // Thêm 'select' để lấy dữ liệu từ các ô input và select
+                        row[$(this).attr('name')] = $(this).val();
+                    });
+                    data.push(row);
+                });
+                // Gửi 'data' đến máy chủ để xử lý
+                console.log(data);
+                // Đoạn mã gửi dữ liệu đến máy chủ có thể được thêm ở đây
+            });
+        });
+    </script>
+}
