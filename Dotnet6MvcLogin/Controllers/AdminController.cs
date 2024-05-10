@@ -439,7 +439,7 @@ namespace Dotnet6MvcLogin.Controllers
         "Thai san",
         "Ly do khac",
         "Chu thich"
-        /*"Đơn vị ",
+       /* "Đơn vị ",
         "Ngày",
         "Tổng quân số",
         "Quân số vắng",
@@ -476,7 +476,8 @@ namespace Dotnet6MvcLogin.Controllers
                 // Đặt kích thước mặc định cho các cột
                 columnWidths[i] = 200f; // Đổi giá trị này tùy thuộc vào kích thước mong muốn của từng cột
 
-                PdfPCell cell = new PdfPCell(new Phrase(columnOrder[i]));
+                /*PdfPCell cell = new PdfPCell(new Phrase(columnOrder[i]));*/
+                PdfPCell cell = new PdfPCell(new Phrase(columnOrder[i], FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, BaseColor.BLACK)));
                 cell.Rowspan = 3; // Cho phép nội dung của ô xuống dòng ở dòng tiếp theo
                 table.AddCell(cell);
             }
@@ -513,7 +514,7 @@ namespace Dotnet6MvcLogin.Controllers
 
         }
 
-
+        
     }
 }
 
