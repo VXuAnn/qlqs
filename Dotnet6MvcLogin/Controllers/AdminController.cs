@@ -351,70 +351,7 @@ namespace Dotnet6MvcLogin.Controllers
         }
         #endregion
 
-        #region Xuất file excel
-        [HttpPost]
-        public IActionResult ExportToExcel(DateTime? ngay)
-        {
-            DateTime dateToExport = ngay ?? DateTime.Now; // Sử dụng ngày hiện tại nếu không có ngày được chọn từ người dùng
-
-            RepoAdmin repoAdmin = new RepoAdmin();
-            DataTable dataTable = repoAdmin.GetBaoCaoQuanSoData(dateToExport);
-
-            // Danh sách các tên cột bạn muốn hiển thị
-            string[] columnNames = {
-        "Đơn vị ",
-        "Ngày",
-        "Tổng quân số",
-        "Quân số vắng",
-        "Đào ngũ",
-        "Đi viện",
-        "Bệnh xá",
-        "Đi học",
-        "Đi thực tế",
-        "Đi thực tập",
-        "Tranh thủ",
-        "Đi công tác",
-        "Thai sản",
-        "Lý do khác",
-        "Chú thích"
-    };
-
-            byte[] fileContents;
-            using (var package = new ExcelPackage())
-            {
-                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
-
-                // Thêm các tên cột vào file Excel
-                for (int i = 1; i < columnNames.Length + 1; i++) // Bắt đầu từ i = 1
-                {
-                    worksheet.Cells[1, i].Value = columnNames[i - 1];
-                }
-
-                // Thêm dữ liệu từ DataTable vào bảng Excel
-                for (int i = 0; i < dataTable.Rows.Count; i++)
-                {
-                    for (int j = 1; j < dataTable.Columns.Count; j++) // Bắt đầu từ j = 1
-                    {
-                        var value = dataTable.Rows[i][j];
-                        if (dataTable.Columns[j].DataType == typeof(DateTime))
-                        {
-                            // Nếu ô chứa ngày, định dạng lại định dạng ngày
-                            worksheet.Cells[i + 2, j].Value = value;
-                            worksheet.Cells[i + 2, j].Style.Numberformat.Format = "dd/MM/yyyy";
-                        }
-                        else
-                        {
-                            worksheet.Cells[i + 2, j].Value = value;
-                        }
-                    }
-                }
-
-                fileContents = package.GetAsByteArray();
-            }
-
-            return File(fileContents, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"QuanSo_{dateToExport.ToString("yyyyMMdd")}.xlsx");
-        }
-        #endregion
+        #region Xuất pdf
         [HttpPost]
         public IActionResult ExportToPDF(DateTime? ngay)
         {
@@ -424,7 +361,7 @@ namespace Dotnet6MvcLogin.Controllers
             DataTable dataTable = repoAdmin.GetBaoCaoQuanSoData(dateToExport);
             List<string> columnOrder = new List<string>
     {
-        "Don vi",
+        "Đơn vị",
         "Ngay",
         "Tong quan so",
         "Quan so vang",
@@ -475,9 +412,13 @@ namespace Dotnet6MvcLogin.Controllers
             {
                 // Đặt kích thước mặc định cho các cột
                 columnWidths[i] = 200f; // Đổi giá trị này tùy thuộc vào kích thước mong muốn của từng cột
+                BaseFont baseFont = BaseFont.CreateFont("F:\\DucTrung\\HVKTQS\\NAM3KI2\\NNLT2\\FINAL\\AspNet\\Dotnet6MvcLogin\\wwwroot\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                Font font = new Font(baseFont, 12, Font.NORMAL);
+                PdfPCell cell = new PdfPCell(new Phrase(columnOrder[i], font));
+
 
                 /*PdfPCell cell = new PdfPCell(new Phrase(columnOrder[i]));*/
-                PdfPCell cell = new PdfPCell(new Phrase(columnOrder[i], FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, BaseColor.BLACK)));
+                //PdfPCell cell = new PdfPCell(new Phrase(columnOrder[i], FontFactory.GetFont(FontFactory.TIMES_ROMAN, 12, BaseColor.BLACK)));
                 cell.Rowspan = 3; // Cho phép nội dung của ô xuống dòng ở dòng tiếp theo
                 table.AddCell(cell);
             }
@@ -513,8 +454,9 @@ namespace Dotnet6MvcLogin.Controllers
 
 
         }
+        #endregion
 
-        
+
     }
 }
 
