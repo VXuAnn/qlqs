@@ -376,21 +376,7 @@ namespace Dotnet6MvcLogin.Controllers
         "Thai sản",
         "Lý do khác",
         "Chú thích"
-       /* "Đơn vị ",
-        "Ngày",
-        "Tổng quân số",
-        "Quân số vắng",
-        "Đào ngũ",
-        "Đi viện",
-        "Bệnh xá",
-        "Đi học",
-        "Đi thực tế",
-        "Đi thực tập",
-        "Tranh thủ",
-        "Đi công tác",
-        "Thai sản",
-        "Lý do khác",
-        "Chú thích"*/
+       
     };
 
             
