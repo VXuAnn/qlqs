@@ -376,6 +376,68 @@ namespace Dotnet6MvcLogin.Controllers
         "Thai sản",
         "Lý do khác",
         "Chú thích"
+    };
+
+            byte[] fileContents;
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Sheet1");
+
+                // Thêm các tên cột vào file Excel
+                for (int i = 1; i < columnNames.Length + 1; i++) // Bắt đầu từ i = 1
+                {
+                    worksheet.Cells[1, i].Value = columnNames[i - 1];
+                }
+
+                // Thêm dữ liệu từ DataTable vào bảng Excel
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    for (int j = 1; j < dataTable.Columns.Count; j++) // Bắt đầu từ j = 1
+                    {
+                        var value = dataTable.Rows[i][j];
+                        if (dataTable.Columns[j].DataType == typeof(DateTime))
+                        {
+                            // Nếu ô chứa ngày, định dạng lại định dạng ngày
+                            worksheet.Cells[i + 2, j].Value = value;
+                            worksheet.Cells[i + 2, j].Style.Numberformat.Format = "dd/MM/yyyy";
+                        }
+                        else
+                        {
+                            worksheet.Cells[i + 2, j].Value = value;
+                        }
+                    }
+                }
+
+                fileContents = package.GetAsByteArray();
+            }
+
+            return File(fileContents, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"QuanSo_{dateToExport.ToString("yyyyMMdd")}.xlsx");
+        }
+        #endregion
+        [HttpPost]
+        public IActionResult ExportToPDF(DateTime? ngay)
+        {
+            DateTime dateToExport = ngay ?? DateTime.Now; // Sử dụng ngày hiện tại nếu không có ngày được chọn từ người dùng
+
+            RepoAdmin repoAdmin = new RepoAdmin();
+            DataTable dataTable = repoAdmin.GetBaoCaoQuanSoData(dateToExport);
+            List<string> columnOrder = new List<string>
+    {
+        "Don vi",
+        "Ngay",
+        "Tong quan so",
+        "Quan so vang",
+        "Dao ngu",
+        "Di vien",
+        "Benh xa",
+        "Di hoc",
+        "Di thuc te",
+        "Di thuc tap",
+        "Tranh thu",
+        "Di cong tac",
+        "Thai san",
+        "Ly do khac",
+        "Chu thich"
        /* "Đơn vị ",
         "Ngày",
         "Tổng quân số",
@@ -390,7 +452,7 @@ namespace Dotnet6MvcLogin.Controllers
         "Đi công tác",
         "Thai sản",
         "Lý do khác",
-        "Chú thích"*/
+        "Chú thích"
     };
 
             
