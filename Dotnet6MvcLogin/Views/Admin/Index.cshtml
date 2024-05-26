@@ -85,6 +85,9 @@
                 @Html.DisplayNameFor(model => model.ChuThich)
             </th>
             <th></th>
+            <th></th>
+
+           
         </tr>
     </thead>
 
@@ -138,11 +141,15 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ChuThich)
                 </td>
+               
                 <td>
 
                     <a asp-action="Edit" asp-route-Id="@item.IdDv"><i class="bi bi-pen">Sửa</i></a>
 
 
+                </td>
+                <td>
+                    <button class="btn btn-success saveEdit" type="button" style="display:none;">Lưu</button>
                 </td>
             </tr>
         }
@@ -167,6 +174,52 @@
     </tfoot>
 
 </table>
+
+ <script>
+    $('td').on('click', function () {
+        var currentTD = $(this);
+        if (!currentTD.find('input').length && !currentTD.is(':last-child')) { // Loại trừ cột nút
+            var value = currentTD.text();
+            currentTD.empty().append($('<input>', { value: value, type: 'text' }));
+            currentTD.find('input').focus();
+            currentTD.siblings().last().find('.saveEdit').show(); // Hiển thị nút Lưu
+        }
+    });
+
+    $('.saveEdit').on('click', function () {
+        var row = $(this).closest('tr');
+        var id = row.find('td:first').text(); // Giả sử cột đầu tiên là ID
+        var updatedValues = {};
+
+        row.find('td').each(function (index, td) {
+            if ($(td).find('input').length > 0) {
+                var input = $(td).find('input');
+                var key = input.attr('name'); // Thêm thuộc tính name cho mỗi input khi tạo
+                var value = input.val();
+                updatedValues[key] = value;
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("EditNew", "AdminController")',
+            type: 'POST',
+            data: { id: '@Model. IdDv', updatedValues: updatedValues },
+            success: function (response) {
+                // Xử lý sau khi cập nhật thành công
+                console.log('Cập nhật thành công');
+            },
+            error: function (error) {
+                // Xử lý lỗi
+                console.log('Có lỗi xảy ra');
+            }
+        });
+
+        $(this).hide(); // Ẩn nút Lưu sau khi nhấn
+    });
+
+
+</script>
+
 
 
 
