@@ -380,8 +380,6 @@ namespace MvcLogin.Repositories
         }
         #endregion
 
-
-
         #region Sửa thông tin quân số
 
         public QuanSo GetBaoCaoQuanSoById(string IdDv)
@@ -592,7 +590,7 @@ namespace MvcLogin.Repositories
         }
         #endregion
 
-        #region xuất excel
+        #region xuất pdf
         public DataTable GetBaoCaoQuanSoData(DateTime ngay)
         {
             DataTable dataTable = new DataTable();

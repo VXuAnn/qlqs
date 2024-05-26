@@ -106,7 +106,7 @@ namespace MvcLogin.Controllers
                 {
                     if (!isValidQsVang)
                     {
-                        TempData["error"] = "Tổng quân số vắng chưa bằng tổng các loại vắng.";
+                        TempData["error"] = "Giá trị của 'qs_vang' phải bằng một trong các trường khác.";
                     }
                     else if (!CheckTB)
                     {
