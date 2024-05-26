@@ -5,7 +5,7 @@ namespace MvcLogin.Models
 {
     public class THDV
     {
-        public string? Id { get; set; }
+        public int? Id { get; set; }
         [Required]
         [DisplayName("Tên trực ban")]
         public string? TenTB { get; set; }

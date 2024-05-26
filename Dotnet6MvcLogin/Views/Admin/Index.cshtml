@@ -84,6 +84,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.ChuThich)
             </th>
+            <th style="display: none;">
+                @Html.DisplayNameFor(model => model.IdBcqs)
+            </th>
             <th></th>
             <th></th>
 
@@ -141,6 +144,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ChuThich)
                 </td>
+                <td style="display: none;">
+                    @Html.DisplayFor(modelItem => item.IdBcqs)
+                </td>
                
                 <td>
 
@@ -176,64 +182,92 @@
 </table>
 
 
-
- <script>
-    (function () {
-        var oldLog = console.log;
-        console.log = function (message) {
-            oldLog.apply(console, arguments); // Gọi phương thức console.log cũ để hiển thị trong console của trình duyệt
-            var consoleDiv = document.getElementById('consoleLog');
-            var newMessage = document.createElement('div');
-            newMessage.textContent = message;
-            consoleDiv.appendChild(newMessage); // Thêm thông báo mới vào thẻ div
-        };
-    })();
-
-    $('td').on('click', function () {
-        var currentTD = $(this);
-        if (!currentTD.find('input').length && !currentTD.is(':last-child')) { // Loại trừ cột nút
-            var value = currentTD.text();
-            currentTD.empty().append($('<input>', { value: value, type: 'text' }));
-            currentTD.find('input').focus();
-            currentTD.siblings().last().find('.saveEdit').show(); // Hiển thị nút Lưu
-        }
-    });
-
-    $('.saveEdit').on('click', function () {
-        var row = $(this).closest('tr');
-        var id = row.find('td:first').text(); // Giả sử cột đầu tiên là ID
-        var updatedValues = {};
-
-        row.find('td').each(function (index, td) {
-            if ($(td).find('input').length > 0) {
-                var input = $(td).find('input');
-                var key = input.attr('name'); // Thêm thuộc tính name cho mỗi input khi tạo
-                var value = input.val();
-                updatedValues[key] = value;
+<script>
+    $(document).ready(function () {
+        $('td').on('click', function () {
+            var currentTD = $(this);
+            if (!currentTD.find('input').length && !currentTD.is(':last-child')) {
+                var value = currentTD.text().trim();
+                var fieldName = currentTD.data('field');
+                currentTD.empty().append($('<input>', { value: value, type: 'text', name: fieldName }));
+                currentTD.find('input').focus();
+                currentTD.siblings().last().find('.saveEdit').show();
             }
         });
 
-        $.ajax({
-            url: '@Url.Action("EditNew", "AdminController")',
-            type: 'POST',
-            data: { id: '@Model. IdDv', updatedValues: updatedValues },
-            success: function (response) {
-                // Xử lý sau khi cập nhật thành công
-                console.log('Cập nhật thành công');
-            },
-            error: function (error) {
-                // Xử lý lỗi
-                console.log('Có lỗi xảy ra');
-            }
+        $('.saveEdit').on('click', function () {
+            var row = $(this).closest('tr');
+            var id = row.find('td:first').text().trim();
+            var ngay = row.find('td:eq(1)').text().trim()
+            var tongqs = row.find('td:eq(2)').text().trim();
+            var qsVang = row.find('td:eq(3)').text().trim();
+            var daoNgu = row.find('td:eq(4)').text().trim();
+            var diVien = row.find('td:eq(5)').text().trim();    
+            var benhXa = row.find('td:eq(6)').text().trim();
+            var diHoc = row.find('td:eq(7)').text().trim();
+            var diThucTe = row.find('td:eq(8)').text().trim();
+            var diThucTap = row.find('td:eq(9)').text().trim();
+            var diTt = row.find('td:eq(10)').text().trim();
+            var diCtac = row.find('td:eq(11)').text().trim();
+            var thaiSan = row.find('td:eq(12)').text().trim();
+            var lyDoKhac = row.find('td:eq(13)').text().trim();
+            var chuThich = row.find('td:eq(14)').text().trim();
+            var idbcqs = row.find('td:eq(15)').text().trim();
+
+
+            // var tongqs = parseInt(row.find('td:eq(2)').text().trim());
+            var updatedValues = {
+                IdDv: id, Ngay: ngay, TongQs: tongqs, QsVang: qsVang,
+                DaoNgu: daoNgu,
+                DiVien: diVien,
+                BenhXa: benhXa,
+                DiHoc: diHoc,
+                DiThucTe: diThucTe,
+                DiThucTap: diThucTap,
+                DiTt: diTt,
+                DiCtac: diCtac,
+                ThaiSan: thaiSan,
+                LyDoKhac: lyDoKhac,
+                ChuThich: chuThich,
+                IdBcqs: idbcqs,
+            };
+           
+
+
+            // Lặp qua tất cả các ô nhập liệu trong hàng
+            row.find('input').each(function () {
+                var fieldName = $(this).attr('name');
+                var value = $(this).val().trim();
+                updatedValues[fieldName] = value; // Thêm giá trị vào đối tượng dữ liệu
+
+            });
+            
+            $.ajax({
+                url: '@Url.Action("EditNew", "Admin")',
+                type: 'POST',
+                data: JSON.stringify(updatedValues),
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.success) {
+                        alert('Cập nhật thành công');
+                    } else {
+                        alert('Có lỗi xảy ra: ' + response.message);
+                    }
+                },
+                error: function (error) {
+                    alert('Có lỗi xảy ra');
+                    console.log('Lỗi:', error);
+                }
+            });
+
+            $(this).hide();
         });
 
-        $(this).hide(); // Ẩn nút Lưu sau khi nhấn
+        $(document).on('blur', 'td input', function () {
+            var input = $(this);
+            var value = input.val().trim();
+            var td = input.closest('td');
+            td.empty().text(value);
+        });
     });
-
-
 </script>
-
-
-
-
-

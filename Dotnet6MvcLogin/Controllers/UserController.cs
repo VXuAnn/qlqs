@@ -140,7 +140,7 @@ namespace MvcLogin.Controllers
             users = quanlyUser.GetBaoCaoQuanSoById(id);
             return View(users);
         }
-        public IActionResult ReturnNew(DateTime? ngay, QuanSo qs, THDV thdv)
+        public IActionResult ReturnNew(QuanSo qs, THDV thdv)
         {
             try
             {
@@ -199,6 +199,20 @@ namespace MvcLogin.Controllers
                     else if (!CheckTB)
                     {
                         TempData["errorTB"] = "Nhập tên trực ban";
+                    }
+                    else
+                    {
+                        // Ghi lại các lỗi ModelState
+                        var errors = ModelState.Values.SelectMany(v => v.Errors);
+                        foreach (var error in errors)
+                        {
+                            // Ghi lại thông báo lỗi
+                            Console.WriteLine(error.ErrorMessage);
+                            if (error.Exception != null)
+                            {
+                                Console.WriteLine(error.Exception.Message);
+                            }
+                        }
                     }
 
                     return View("AddQuanSo");

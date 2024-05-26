@@ -10,6 +10,7 @@ using System;
 /*using iText.Kernel.Pdf;*/
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Org.BouncyCastle.Utilities;
 
 
 
@@ -212,6 +213,7 @@ namespace Dotnet6MvcLogin.Controllers
         }
         #endregion
 
+
         #region Sửa thông tin quân số
         public ActionResult Edit(string id)
         {
@@ -222,48 +224,109 @@ namespace Dotnet6MvcLogin.Controllers
             users = quanlyUser.GetBaoCaoQuanSoById(id);
             return View(users);
         }
-        public IActionResult EditNew(QuanSo qs)
+        [HttpPost]
+
+        public IActionResult EditNew([FromBody] Dictionary<string, string> updatedValues)
         {
             try
             {
-
-
-                // Kiểm tra xem giá trị của qs_vang có phù hợp không
-                bool isValidQsVang = qs.QsVang == qs.DaoNgu || qs.QsVang == qs.DiVien || qs.QsVang == qs.BenhXa ||
-                                      qs.QsVang == qs.DiHoc || qs.QsVang == qs.DiThucTe || qs.QsVang == qs.DiThucTap ||
-                                      qs.QsVang == qs.DiTt || qs.QsVang == qs.DiCtac || qs.QsVang == qs.ThaiSan ||
-                                      qs.QsVang == qs.LyDoKhac;
-
-                // Kiểm tra xem đã tồn tại một bản ghi cho ngày này chưa
-                RepoAdmin _DbQs = new RepoAdmin();
-
-
-                if (ModelState.IsValid && isValidQsVang)
+                Console.WriteLine("Dữ liệu nhận được: ");
+                foreach (var key in updatedValues.Keys)
                 {
-                    if (_DbQs.EditQuanSo(qs))
+                    Console.WriteLine($"{key}: {updatedValues[key]}");
+                }
+
+                if (updatedValues.ContainsKey("IdDv"))
+                {
+                    string id = updatedValues["IdDv"];
+                    //string ngay = updatedValues["Ngay"];
+
+                    int tongqs = int.Parse(updatedValues["TongQs"]);
+                    int qsVang = int.Parse(updatedValues["QsVang"]);
+                    int idbcqs = int.Parse(updatedValues["IdBcqs"]);
+                    //DateTime ngay = DateTime.Parse(updatedValues["Ngay"]);
+                    QuanSo qs = new QuanSo
                     {
-                        TempData["success"] = "sửa thành công!";
-                        return View("Edit");
+                        IdDv = id,
+                        Ngay = ParseNullableDateTime(updatedValues, "Ngay"),
+                        TongQs = tongqs,
+                        QsVang = qsVang,
+                        DaoNgu = ParseNullableInt(updatedValues, "DaoNgu"),
+                        DiVien = ParseNullableInt(updatedValues, "DiVien"),
+                        BenhXa = ParseNullableInt(updatedValues, "BenhXa"),
+                        DiHoc = ParseNullableInt(updatedValues, "DiHoc"),
+                        DiThucTe = ParseNullableInt(updatedValues, "DiThucTe"),
+                        DiThucTap = ParseNullableInt(updatedValues, "DiThucTap"),
+                        DiTt = ParseNullableInt(updatedValues, "DiTt"),
+                        DiCtac = ParseNullableInt(updatedValues, "DiCtac"),
+                        ThaiSan = ParseNullableInt(updatedValues, "ThaiSan"),
+                        LyDoKhac = ParseNullableInt(updatedValues, "LyDoKhac"),
+                        ChuThich = updatedValues.ContainsKey("ChuThich") && !string.IsNullOrEmpty(updatedValues["ChuThich"]) ? updatedValues["ChuThich"] : null,
+                        IdBcqs = idbcqs
+                    };
+
+
+                    bool isValidQsVang = qs.QsVang == qs.DaoNgu || qs.QsVang == qs.DiVien || qs.QsVang == qs.BenhXa ||
+                                          qs.QsVang == qs.DiHoc || qs.QsVang == qs.DiThucTe || qs.QsVang == qs.DiThucTap ||
+                                          qs.QsVang == qs.DiTt || qs.QsVang == qs.DiCtac || qs.QsVang == qs.ThaiSan ||
+                                          qs.QsVang == qs.LyDoKhac;
+
+                    if (ModelState.IsValid && isValidQsVang)
+                    {
+                        RepoAdmin _DbQs = new RepoAdmin();
+                        if (_DbQs.EditQuanSo(qs))
+                        {
+                            return Json(new { success = true, message = "Cập nhật thành công" });
+                        }
+                        else
+                        {
+                            return Json(new { success = false, message = "Cập nhật không thành công" });
+                        }
+                    }
+                    else
+                    {
+                        if (!isValidQsVang)
+                        {
+                            return Json(new { success = false, message = "Giá trị của 'qs_vang' phải bằng một trong các trường khác." });
+                        }
+                        else
+                        {
+                            return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
+                        }
                     }
                 }
                 else
                 {
-                    if (!isValidQsVang)
-                    {
-                        TempData["error"] = "Giá trị của 'qs_vang' phải bằng một trong các trường khác.";
-                    }
-
-
-                    return View("Edit");
+                    return Json(new { success = false, message = "Thiếu khóa chính 'IdDv'." });
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return View("Edit");
+                Console.WriteLine("Lỗi: " + ex.Message);
+                return Json(new { success = false, message = "Có lỗi xảy ra: " + ex.Message });
             }
-
-            return View("Edit"); // T
         }
+
+        private int? ParseNullableInt(Dictionary<string, string> values, string key)
+        {
+            if (values.ContainsKey(key) && int.TryParse(values[key], out int result))
+            {
+                return result;
+            }
+            return null;
+        }
+
+
+        private DateTime? ParseNullableDateTime(Dictionary<string, string> values, string key)
+        {
+            if (values.ContainsKey(key) && DateTime.TryParse(values[key], out DateTime result))
+            {
+                return result;
+            }
+            return null;
+        }
+
+
         #endregion
 
         #region Sửa thông tin Tình hình đơn vị
@@ -276,28 +339,54 @@ namespace Dotnet6MvcLogin.Controllers
             users = quanlyUser.GetTHDVById(id);
             return View(users);
         }
-        public IActionResult EditNewTHDV(THDV qs)
+        public IActionResult EditNewTHDV([FromBody] Dictionary<string, string> updatedValues)
         {
             try
             {
 
-                // Kiểm tra xem đã tồn tại một bản ghi cho ngày này chưa
-                RepoAdmin _DbQs = new RepoAdmin();
-
-
-                if (ModelState.IsValid)
+                if (updatedValues.ContainsKey("IdDv"))
                 {
-                    if (_DbQs.EditTHDV(qs))
+                    int id = int.Parse(updatedValues["Id"]);
+                    string iddv = updatedValues["IdDv"];
+                    string tentb = updatedValues["TenTB"];
+                    string nvvs = updatedValues["Nvvs"];
+                    string canhgac = updatedValues["CanhGac"];
+                    string ghichu = updatedValues["GhiChu"];
+
+
+                    
+                    //DateTime ngay = DateTime.Parse(updatedValues["Ngay"]);
+                    THDV qs = new THDV
                     {
-                        TempData["success"] = "sửa thành công!";
+                        Id = id,
+                        Ngay = ParseNullableDateTime(updatedValues, "Ngay"),
+                        IdDv = iddv,
+                        TenTB = tentb,
+                        Nvvs = nvvs,
+                        CanhGac = canhgac,
+                        GhiChu = ghichu,
+                        
+                    };
+
+
+                    // Kiểm tra xem đã tồn tại một bản ghi cho ngày này chưa
+                    RepoAdmin _DbQs = new RepoAdmin();
+
+
+                    if (ModelState.IsValid)
+                    {
+                        if (_DbQs.EditTHDV(qs))
+                        {
+                            TempData["success"] = "sửa thành công!";
+                            return Json(new { success = true, message = "Cập nhật thành công" });
+                        }
+                    }
+                    else
+                    {
+
+
                         return View("EditTHDV");
                     }
-                }
-                else
-                {
-
-
-                    return View("EditTHDV");
                 }
             }
             catch
@@ -306,7 +395,8 @@ namespace Dotnet6MvcLogin.Controllers
             }
 
             return View("EditTHDV"); // T
-        }
+        } 
+    
         #endregion
 
         #region Thêm đơn vị

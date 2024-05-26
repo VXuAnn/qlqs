@@ -34,14 +34,19 @@
                         <input asp-for="QuanSoModel.IdDv" type="text" name="IdDv" class="form-control" value="@User.Identity.Name" readonly />
                         <span asp-validation-for="QuanSoModel.IdDv" class="text-danger"></span>
                     </div>
+                    @* <div class="form-group">
+                        <label asp-for="QuanSoModel.Ngay" class="control-label"></label>
+                        <input asp-for="QuanSoModel.Ngay" type="text"  name="Ngay" class="form-control"  />
+                        <span asp-validation-for="QuanSoModel.Ngay" class="text-danger"></span>
+                    </div> *@
                     <div class="form-group">
                         <label asp-for="QuanSoModel.TongQs" class="control-label"></label>
-                        <input asp-for="QuanSoModel.TongQs" name="TongQS" class="form-control" />
+                        <input asp-for="QuanSoModel.TongQs" type="number" name="TongQS" class="form-control" />
                         <span asp-validation-for="QuanSoModel.TongQs" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="QuanSoModel.QsVang" class="control-label"></label>
-                        <input asp-for="QuanSoModel.QsVang" name="QsVang" class="form-control" />
+                        <input asp-for="QuanSoModel.QsVang" type="number" name="QsVang" class="form-control" />
                         <span asp-validation-for="QuanSoModel.QsVang" class="text-danger"></span>
                     </div>
                     <div class="form-group">

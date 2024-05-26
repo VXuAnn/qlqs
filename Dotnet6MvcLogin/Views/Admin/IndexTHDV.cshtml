@@ -1,6 +1,8 @@
 ﻿@using MvcLogin.Models
 @model IEnumerable<THDV>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <form method="get" asp-action="IndexTHDV">
     <div class="form-group">
         <label for="ngay">Ngày:</label>
@@ -14,9 +16,9 @@
 <table id="example" class="table table-striped" style="width:100%">
     <thead>
         <tr>
-            @* <th>
-            @Html.DisplayNameFor(model => model.IdBcqs)
-            </th> *@
+            <th style="display: none;">
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.IdDv)
             </th>
@@ -38,18 +40,19 @@
             <th>
 
             </th>
+            <th></th>
 
         </tr>
     </thead>
-    
+
     <tbody>
         @foreach (var item in Model)
         {
 
             <tr>
-                @* <td>
-            @Html.DisplayFor(modelItem => item.IdBcqs)
-            </td> *@
+                <td style="display: none;">
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.IdDv)
                 </td>
@@ -73,16 +76,93 @@
 
                     <a asp-action="EditTHDV" asp-route-Id="@item.IdDv"><i class="bi bi-pen">Sửa</i></a>
 
-                   
 
+
+                </td>
+                <td>
+                    <button class="btn btn-success saveEdit" type="button" style="display:none;">Lưu</button>
                 </td>
             </tr>
         }
 
     </tbody>
-   
+
 </table>
-<a href="#">Hiển thị thêm</a>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('td').on('click', function () {
+            var currentTD = $(this);
+            if (!currentTD.find('input').length && !currentTD.is(':last-child')) {
+                var value = currentTD.text().trim();
+                var fieldName = currentTD.data('field');
+                currentTD.empty().append($('<input>', { value: value, type: 'text', name: fieldName }));
+                currentTD.find('input').focus();
+                currentTD.siblings().last().find('.saveEdit').show();
+            }
+        });
+
+        $('.saveEdit').on('click', function () {
+            var row = $(this).closest('tr');
+            var id = row.find('td:first').text().trim();
+            var iddv = row.find('td:eq(1)').text().trim()
+            var ngay = row.find('td:eq(2)').text().trim();
+            var tentb = row.find('td:eq(3)').text().trim();
+            var nvvs = row.find('td:eq(4)').text().trim();
+            var canhgac = row.find('td:eq(5)').text().trim();
+            var ghichu = row.find('td:eq(6)').text().trim();
+           
+
+            // var tongqs = parseInt(row.find('td:eq(2)').text().trim());
+            var updatedValues = {
+                Id: id, IdDv: iddv ,Ngay: ngay, TenTB: tentb, Nvvs: nvvs,
+                CanhGac: canhgac,
+                GhiChu: ghichu,
+                
+            };
+
+
+
+            // Lặp qua tất cả các ô nhập liệu trong hàng
+            row.find('input').each(function () {
+                var fieldName = $(this).attr('name');
+                var value = $(this).val().trim();
+                updatedValues[fieldName] = value; // Thêm giá trị vào đối tượng dữ liệu
+
+            });
+
+            $.ajax({
+                url: '@Url.Action("EditNewTHDV", "Admin")',
+                type: 'POST',
+                data: JSON.stringify(updatedValues),
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.success) {
+                        alert('Cập nhật thành công');
+                    } else {
+                        alert('Có lỗi xảy ra: ' + response.message);
+                    }
+                },
+                error: function (error) {
+                    alert('Có lỗi xảy ra');
+                    console.log('Lỗi:', error);
+                }
+            });
+
+            $(this).hide();
+        });
+
+        $(document).on('blur', 'td input', function () {
+            var input = $(this);
+            var value = input.val().trim();
+            var td = input.closest('td');
+            td.empty().text(value);
+        });
+    });
+</script>
+
 
 
 
