@@ -429,6 +429,7 @@ namespace MvcLogin.Repositories
             return qs;
 
         }
+
         public bool EditQuanSo(QuanSo qs)
         {
             SqlCommand cmd = new SqlCommand("updateBaoCaoQuanSo", _connection);
