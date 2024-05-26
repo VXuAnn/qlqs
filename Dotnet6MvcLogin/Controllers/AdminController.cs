@@ -226,6 +226,8 @@ namespace Dotnet6MvcLogin.Controllers
         {
             try
             {
+
+
                 // Kiểm tra xem giá trị của qs_vang có phù hợp không
                 bool isValidQsVang = qs.QsVang == qs.DaoNgu || qs.QsVang == qs.DiVien || qs.QsVang == qs.BenhXa ||
                                       qs.QsVang == qs.DiHoc || qs.QsVang == qs.DiThucTe || qs.QsVang == qs.DiThucTap ||

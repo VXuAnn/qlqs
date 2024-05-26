@@ -175,7 +175,20 @@
 
 </table>
 
+
+ 
  <script>
+    (function () {
+        var oldLog = console.log;
+        console.log = function (message) {
+            oldLog.apply(console, arguments); // Gọi phương thức console.log cũ để hiển thị trong console của trình duyệt
+            var consoleDiv = document.getElementById('consoleLog');
+            var newMessage = document.createElement('div');
+            newMessage.textContent = message;
+            consoleDiv.appendChild(newMessage); // Thêm thông báo mới vào thẻ div
+        };
+    })();
+
     $('td').on('click', function () {
         var currentTD = $(this);
         if (!currentTD.find('input').length && !currentTD.is(':last-child')) { // Loại trừ cột nút
