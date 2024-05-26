@@ -378,7 +378,21 @@ namespace Dotnet6MvcLogin.Controllers
         "Thai sản",
         "Lý do khác",
         "Chú thích"
-       
+       /* "Đơn vị ",
+        "Ngày",
+        "Tổng quân số",
+        "Quân số vắng",
+        "Đào ngũ",
+        "Đi viện",
+        "Bệnh xá",
+        "Đi học",
+        "Đi thực tế",
+        "Đi thực tập",
+        "Tranh thủ",
+        "Đi công tác",
+        "Thai sản",
+        "Lý do khác",
+        "Chú thích"*/
     };
 
             
@@ -400,7 +414,7 @@ namespace Dotnet6MvcLogin.Controllers
             {
                 // Đặt kích thước mặc định cho các cột
                 columnWidths[i] = 200f; // Đổi giá trị này tùy thuộc vào kích thước mong muốn của từng cột
-                BaseFont baseFont = BaseFont.CreateFont("F:\\DucTrung\\HVKTQS\\NAM3KI2\\NNLT2\\FINAL\\AspNet\\Dotnet6MvcLogin\\wwwroot\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                BaseFont baseFont = BaseFont.CreateFont("E:\\BTL\\qlqs\\Dotnet6MvcLogin\\wwwroot\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
                 Font font = new Font(baseFont, 12, Font.NORMAL);
                 PdfPCell cell = new PdfPCell(new Phrase(columnOrder[i], font));
 

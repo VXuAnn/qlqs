@@ -15,7 +15,7 @@ namespace MvcLogin.Repositories
 
         public RepoUser()
         {
-            string connStr = "Data Source=LUCKYBOI;Initial Catalog=login;Persist Security Info=True;User ID=LK;Password=1;Trust Server Certificate=True";
+            string connStr = "Data Source=VUAN;Initial Catalog=QLQS2;Persist Security Info=True;User ID=sa;Password=123;Trust Server Certificate=True";
 
             _connection = new SqlConnection(connStr);
         }
@@ -122,11 +122,6 @@ namespace MvcLogin.Repositories
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@id_dv", IdDv);
-
-
-
-
-
             SqlDataAdapter dataAdapter = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             dataAdapter.Fill(dt);
@@ -135,10 +130,6 @@ namespace MvcLogin.Repositories
             {
                 qs.Add(new QuanSo
                 {
-
-
-
-
                     IdDv = dr["id_dv"] != DBNull.Value ? Convert.ToString(dr["id_dv"]) : string.Empty,
                     Ngay = dr["ngay"] != DBNull.Value ? Convert.ToDateTime(dr["ngay"]) : (DateTime?)null,
                     TongQs = dr["tong_qs"] != DBNull.Value ? Convert.ToInt32(dr["tong_qs"]) : (int?)null,

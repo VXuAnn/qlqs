@@ -1,5 +1,8 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
+.sidebar a.active {
+    background-color: #d3d3d3;
+    color: #000; 
+}
 :root {
     --color-primary: #6C9BCF;
     --color-danger: #FF0060;

@@ -16,13 +16,15 @@ namespace Dotnet6MvcLogin.Models.DTO
         public string Username { get; set; }
 
         [Required]
-        [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[#$^+=!*()@%&]).{6,}$",ErrorMessage ="Minimum length 6 and must contain  1 Uppercase,1 lowercase, 1 special character and 1 digit")]
+        [RegularExpression("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[#$^+=!*()@%&]).{6,}$", ErrorMessage = "Minimum length 6 and must contain  1 Uppercase,1 lowercase, 1 special character and 1 digit")]
         public string Password { get; set; }
         [Required]
         [Compare("Password")]
         public string PasswordConfirm { get; set; }
         public string? Role { get; set; }
-        
-        public string? IdDv {  get; set; }
+        [Required]
+        public string IdDv { get; set; }
+        [Required]
+        public string TenDv { get; set; }
     }
 }

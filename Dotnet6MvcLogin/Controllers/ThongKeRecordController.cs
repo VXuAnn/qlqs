@@ -25,7 +25,7 @@ namespace MvcLogin.Controllers
                                                   .ToList();
 
             List<int> dataForChart = new List<int>();
-            List<int> dataForQsVang = new List<int>(); // Thêm danh sách dữ liệu cho cột qs_vắng
+            List<int> dataForQsVang = new List<int>(); 
 
             foreach (var date in dateRange)
             {

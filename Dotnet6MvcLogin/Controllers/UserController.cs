@@ -106,7 +106,7 @@ namespace MvcLogin.Controllers
                 {
                     if (!isValidQsVang)
                     {
-                        TempData["error"] = "Giá trị tổng quân số vắng phải bằng tổng các lý do";
+                        TempData["error"] = "Giá trị của 'qs_vang' phải bằng một trong các trường khác.";
                     }
                     else if (!CheckTB)
                     {
@@ -114,7 +114,7 @@ namespace MvcLogin.Controllers
                     }
                     else if (isExistingRecordForToday)
                     {
-                        TempData["error"] = "Chỉ được phép nhập một lần trong ngày.";
+                        TempData["error"] = "Chỉ được phép nhập một lần trong ngày. Nếu có sai xót hãy sửa bên xem lại";
                     }
 
                     return View("AddQuanSo");

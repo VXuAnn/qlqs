@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using MvcLogin.Models;
 using MvcLogin.Repositories;
 using MvcLogin.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dotnet6MvcLogin.Controllers
 {
     public class UserAuthenticationController : Controller
     {
+
         private readonly IUserAuthenticationService _authService;
         public UserAuthenticationController(IUserAuthenticationService authService)
         {
@@ -104,12 +106,16 @@ namespace Dotnet6MvcLogin.Controllers
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationModel model)
         {
-            if(!ModelState.IsValid) { return View(model); }
+            if (!ModelState.IsValid) { return View(model); }
+
+
             model.Role = "user";
             var result = await this._authService.RegisterAsync(model);
             TempData["msg"] = result.Message;
             return RedirectToAction(nameof(Registration));
         }
+
+
 
         [Authorize]
         public async Task<IActionResult> Logout()
