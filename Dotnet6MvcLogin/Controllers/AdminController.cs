@@ -266,17 +266,17 @@ namespace Dotnet6MvcLogin.Controllers
                     };
 
 
-                    bool isValidQsVang = qs.QsVang == qs.DaoNgu || qs.QsVang == qs.DiVien || qs.QsVang == qs.BenhXa ||
-                                          qs.QsVang == qs.DiHoc || qs.QsVang == qs.DiThucTe || qs.QsVang == qs.DiThucTap ||
-                                          qs.QsVang == qs.DiTt || qs.QsVang == qs.DiCtac || qs.QsVang == qs.ThaiSan ||
-                                          qs.QsVang == qs.LyDoKhac;
+                    bool isValidQsVang = qs.QsVang == qs.DaoNgu + qs.DiVien + qs.BenhXa +
+                             qs.DiHoc + qs.DiThucTe + qs.DiThucTap +
+                             qs.DiTt + qs.DiCtac + qs.ThaiSan +
+                             qs.LyDoKhac;
 
                     if (ModelState.IsValid && isValidQsVang)
                     {
                         RepoAdmin _DbQs = new RepoAdmin();
                         if (_DbQs.EditQuanSo(qs))
                         {
-                            return Json(new { success = true, message = "Cập nhật thành công" });
+                            return Json(new { success = true, message = "Cập nhật thành công", redirectUrl = Url.Action("Index") });
                         }
                         else
                         {
@@ -287,7 +287,8 @@ namespace Dotnet6MvcLogin.Controllers
                     {
                         if (!isValidQsVang)
                         {
-                            return Json(new { success = false, message = "Giá trị của 'qs_vang' phải bằng một trong các trường khác." });
+                            return Json(new { success = false, message = "Giá trị của quân số vắng phải bằng tổng các  trường khác.", redirectUrl = Url.Action("Index") });
+                          
                         }
                         else
                         {

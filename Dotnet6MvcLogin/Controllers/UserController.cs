@@ -33,7 +33,16 @@ namespace MvcLogin.Controllers
 
             if (time >= startTime && time < endTime)
             {
-                return View();
+                RepoUser _DbQs = new RepoUser();
+                bool isExistingRecordForToday = _DbQs.isExistingRecord(DateTime.Today, User.Identity.Name);
+                if (!isExistingRecordForToday)
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Return");
+                }
 
             }
             else
@@ -106,7 +115,7 @@ namespace MvcLogin.Controllers
                 {
                     if (!isValidQsVang)
                     {
-                        TempData["error"] = "Giá trị của 'qs_vang' phải bằng một trong các trường khác.";
+                        TempData["error"] = "Giá trị của quân số vắng phải bằng tổng các trường khác.";
                     }
                     else if (!CheckTB)
                     {
@@ -186,7 +195,7 @@ namespace MvcLogin.Controllers
                         if (_DbQs.addCombinces(combine))
                         {
                             TempData["success"] = "sửa thành công!";
-                            return RedirectToAction("AddQuanSo");
+                            return RedirectToAction("Return");
                         }
                     }
                 }
@@ -194,7 +203,7 @@ namespace MvcLogin.Controllers
                 {
                     if (!isValidQsVang)
                     {
-                        TempData["error"] = "Giá trị của 'qs_vang' phải bằng một trong các trường khác.";
+                        TempData["error"] = "Giá trị của quân số vắng phải bằng tổng các trường khác.";
                     }
                     else if (!CheckTB)
                     {
@@ -215,15 +224,15 @@ namespace MvcLogin.Controllers
                         }
                     }
 
-                    return View("AddQuanSo");
+                    return RedirectToAction("Return");
                 }
             }
             catch
             {
-                return View("AddQuanSo");
+                return RedirectToAction("Return");
             }
 
-            return View("AddQuanSo"); // Thêm này nếu có lỗi xảy ra và không thể xử lý được
+            return RedirectToAction("Return"); // Thêm này nếu có lỗi xảy ra và không thể xử lý được
         }
         #endregion
 

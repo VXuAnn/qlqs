@@ -76,10 +76,10 @@
                         <span class="material-icons-sharp">alarm</span>
                         <h3>Lịch sử truy cập</h3>
                     </a>
-                    <a href="/Admin/HistoryAction" class="@(currentController == "Admin" && currentAction == "HistoryAction" ? "active" : "")">
+                    @* <a href="/Admin/HistoryAction" class="@(currentController == "Admin" && currentAction == "HistoryAction" ? "active" : "")">
                         <span class="material-icons-sharp">remove_red_eye</span>
                         <h3>Lịch sử hành động</h3>
-                    </a>
+                    </a> *@
                 }
                 @if (User.IsInRole("user"))
                 {
