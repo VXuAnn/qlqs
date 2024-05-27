@@ -15,7 +15,7 @@ namespace MvcLogin.Repositories
 
         public RepoUser()
         {
-            string connStr = "Data Source=VUAN;Initial Catalog=QLQS2;Persist Security Info=True;User ID=sa;Password=123;Trust Server Certificate=True";
+            string connStr = "Data Source=LUCKYBOI;Initial Catalog=qlqs;Persist Security Info=True;User ID=LK;Password=1;Trust Server Certificate=True";
 
             _connection = new SqlConnection(connStr);
         }

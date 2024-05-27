@@ -250,8 +250,11 @@
                 success: function (response) {
                     if (response.success) {
                         alert('Cập nhật thành công');
+                        window.location.reload();
                     } else {
                         alert('Có lỗi xảy ra: ' + response.message);
+                        window.location.reload();
+
                     }
                 },
                 error: function (error) {

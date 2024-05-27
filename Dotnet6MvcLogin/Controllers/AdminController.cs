@@ -285,20 +285,20 @@ namespace Dotnet6MvcLogin.Controllers
                     }
                     else
                     {
-                        if (!isValidQsVang)
-                        {
-                            return Json(new { success = false, message = "Giá trị của quân số vắng phải bằng tổng các  trường khác.", redirectUrl = Url.Action("Index") });
+                            if (!isValidQsVang)
+                            {
+                                return Json(new { success = false, message = "Giá trị của quân số vắng phải bằng tổng các  trường khác." });
                           
-                        }
+                            }
                         else
                         {
-                            return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
+                            return Json(new { success = false, message = "Dữ liệu không hợp lệ.", redirectUrl = Url.Action("Index") });
                         }
                     }
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Thiếu khóa chính 'IdDv'." });
+                    return Json(new { success = false, message = "Thiếu khóa chính 'IdDv'.", redirectUrl = Url.Action("Index") });
                 }
             }
             catch (Exception ex)
@@ -505,7 +505,7 @@ namespace Dotnet6MvcLogin.Controllers
             {
                 // Đặt kích thước mặc định cho các cột
                 columnWidths[i] = 200f; // Đổi giá trị này tùy thuộc vào kích thước mong muốn của từng cột
-                BaseFont baseFont = BaseFont.CreateFont("E:\\BTL\\qlqs\\Dotnet6MvcLogin\\wwwroot\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                BaseFont baseFont = BaseFont.CreateFont("F:\\DucTrung\\HVKTQS\\NAM3KI2\\NNLT2\\FINAL\\AspNet\\Web\\Dotnet6MvcLogin\\wwwroot\\arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
                 Font font = new Font(baseFont, 12, Font.NORMAL);
                 PdfPCell cell = new PdfPCell(new Phrase(columnOrder[i], font));
 

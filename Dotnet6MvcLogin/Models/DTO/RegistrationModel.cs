@@ -22,9 +22,9 @@ namespace Dotnet6MvcLogin.Models.DTO
         [Compare("Password")]
         public string PasswordConfirm { get; set; }
         public string? Role { get; set; }
-        [Required]
-        public string IdDv { get; set; }
-        [Required]
-        public string TenDv { get; set; }
+       
+        public string? IdDv { get; set; }
+       
+      
     }
 }
