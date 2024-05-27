@@ -14,7 +14,7 @@ namespace MvcLogin.Repositories
         private SqlConnection _connection;
         public RepoAdmin()
         {
-            string connStr = "Data Source=VUAN;Initial Catalog=qlqs;Persist Security Info=True;User ID=sa;Password=123;Trust Server Certificate=True";
+            string connStr = "Data Source=VUAN;Initial Catalog=QLQS2;Persist Security Info=True;User ID=sa;Password=123;Trust Server Certificate=True";
 
             _connection = new SqlConnection(connStr);
         }
@@ -268,7 +268,7 @@ namespace MvcLogin.Repositories
             {
                 listQuanSo.Add(new THDV
                 {
-
+                    Id = Convert.ToInt32(dr["id_thdv"]),
                     IdDv = dr["id_dv"] != DBNull.Value ? Convert.ToString(dr["id_dv"]) : string.Empty,
                     Ngay = dr["ngay"] != DBNull.Value ? Convert.ToDateTime(dr["ngay"]) : (DateTime?)null,
                     Nvvs = dr["nvvs"] != DBNull.Value ? Convert.ToString(dr["nvvs"]) : string.Empty,
@@ -380,6 +380,8 @@ namespace MvcLogin.Repositories
         }
         #endregion
 
+        
+
         #region Sửa thông tin quân số
 
         public QuanSo GetBaoCaoQuanSoById(string IdDv)
@@ -425,11 +427,13 @@ namespace MvcLogin.Repositories
             return qs;
 
         }
+
         public bool EditQuanSo(QuanSo qs)
         {
-            SqlCommand cmd = new SqlCommand("updateBaoCaoQuanSo", _connection);
+            SqlCommand cmd = new SqlCommand("updateBaoCaoQuanSoAdmin", _connection);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
+            cmd.Parameters.AddWithValue("@idbcqs", qs.IdBcqs != null ? qs.IdBcqs : DBNull.Value);
             cmd.Parameters.AddWithValue("@id_dv", qs.IdDv != null ? qs.IdDv : DBNull.Value);
             cmd.Parameters.AddWithValue("@ngay", qs.Ngay != null ? qs.Ngay : DBNull.Value);
             cmd.Parameters.AddWithValue("@tong_qs", qs.TongQs != null ? qs.TongQs : DBNull.Value);
@@ -445,6 +449,7 @@ namespace MvcLogin.Repositories
             cmd.Parameters.AddWithValue("@thai_san", qs.ThaiSan != null ? qs.ThaiSan : DBNull.Value);
             cmd.Parameters.AddWithValue("@ly_do_khac", qs.LyDoKhac != null ? qs.LyDoKhac : DBNull.Value);
             cmd.Parameters.AddWithValue("@chu_thich", qs.ChuThich != null ? qs.ChuThich : DBNull.Value);
+
 
             _connection.Open();
 
@@ -507,6 +512,7 @@ namespace MvcLogin.Repositories
             SqlCommand cmd = new SqlCommand("updateTHDV", _connection);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
+            cmd.Parameters.AddWithValue("@id", qs.Id != null ? qs.Id : DBNull.Value);
             cmd.Parameters.AddWithValue("@id_dv", qs.IdDv != null ? qs.IdDv : DBNull.Value);
             cmd.Parameters.AddWithValue("@ngay", qs.Ngay != null ? qs.Ngay : DBNull.Value);
             cmd.Parameters.AddWithValue("@ten_tb", qs.TenTB != null ? qs.TenTB : DBNull.Value);

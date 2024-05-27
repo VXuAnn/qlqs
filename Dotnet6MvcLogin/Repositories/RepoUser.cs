@@ -15,17 +15,18 @@ namespace MvcLogin.Repositories
 
         public RepoUser()
         {
-            string connStr = "Data Source=VUAN;Initial Catalog=qlqs;Persist Security Info=True;User ID=sa;Password=123;Trust Server Certificate=True";
+            string connStr = "Data Source=VUAN;Initial Catalog=QLQS2;Persist Security Info=True;User ID=sa;Password=123;Trust Server Certificate=True";
 
             _connection = new SqlConnection(connStr);
         }
         #endregion
 
         #region xem lại dữ liệu nhập
+
         public Combinecs GetBaoCaoQuanSoById(string IdDv)
         {
             Combinecs combinedData = new Combinecs(); // Tạo một đối tượng mới để chứa cả QuanSo và THDV
-            DateTime today = DateTime.Today; // Lấy ngày hôm nay
+            DateTime today = DateTime.Today.Date; // Lấy ngày hôm nay
 
             using (SqlCommand cmd = new SqlCommand("getBaoCaoQuanSoByDateAndId", _connection))
             {
@@ -248,6 +249,9 @@ namespace MvcLogin.Repositories
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
+
+                
+
                 cmd.Parameters.AddWithValue("@id_dv", qs.IdDv != null ? qs.IdDv : DBNull.Value);
                 cmd.Parameters.AddWithValue("@ngay", qs.Ngay != null ? qs.Ngay : DBNull.Value);
                 cmd.Parameters.AddWithValue("@tong_qs", qs.TongQs != null ? qs.TongQs : DBNull.Value);
@@ -268,8 +272,8 @@ namespace MvcLogin.Repositories
 
                 int i = cmd.ExecuteNonQuery();
                 _connection.Close();
-                if (i >= 1)
-                {
+                if(i >= 1)
+              
                     // Nếu thêm thành công vào bảng QuanSo, thêm dữ liệu vào bảng TinhHinhDonVi
                     using (SqlCommand cmd2 = new SqlCommand("updateTHDV", _connection))
                     {
@@ -289,9 +293,7 @@ namespace MvcLogin.Repositories
                         // Trả về true nếu cả hai lệnh INSERT đều thành công
                         return j >= 1;
                     }
-
-                }
-                else
+                 else
                 {
                     return false;
                 }

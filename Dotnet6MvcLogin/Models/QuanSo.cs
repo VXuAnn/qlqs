@@ -5,6 +5,7 @@ namespace MvcLogin.Models
 {
     public class QuanSo
     {
+        
         public int IdBcqs { get; set; }
         [DisplayName("Đơn vị")]
         public string? IdDv { get; set; }
