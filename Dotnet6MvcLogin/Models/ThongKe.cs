@@ -15,7 +15,7 @@ namespace ThongKe.Models
             public DateTime ngay { get; set; }
             public int tong_qs { get; set; }
             public int qs_vang { get; set; }
-           /* public int dao_ngu { get; set; }
+            public int dao_ngu { get; set; }
             public int di_vien { get; set; }
             public int benh_xa { get; set; }
             public int di_hoc { get; set; }
@@ -24,7 +24,7 @@ namespace ThongKe.Models
             public int di_tt { get; set; }
             public int di_ctac { get; set; }
             public int thai_san { get; set; }
-            public int ly_do_khac { get; set; }*/
+            public int ly_do_khac { get; set; }
     }
 
 }

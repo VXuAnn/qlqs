@@ -17,22 +17,358 @@
             
         }
     </select>
-    
-    <button class="btn" id="thongKeButton" onclick="getDataForChart()">Thống kê đơn vị</button>
-    <button onclick="getDataForChartHV()">Thống kê Học Viện</button>
+    <button class="btn" id="thongKeButton" onclick="getDataForChart()" style="background-color:#0099ff;">Thống kê đơn vị</button>
+    <button class="btn" id="thongKeButton" onclick="getDataAndDrawPieChart()" style="background-color:#99ff33;">Tỷ lệ vắng đơn vị</button>
+    <button class="btn" id="thongKeButton" onclick="getDataForChartHV()" style="background-color:#0099ff;">Thống kê Học Viện</button>
+    <button class="btn" id="thongKeButton" onclick="getDataAndDrawPieChart2()" style="background-color:#99ff33;">Tỷ lệ vắng Học Viện</button>
 </div>
 
 <div class="chart-container">
     <div class="chart-item">
-        <canvas id="tkchart" width="800" height="300"></canvas>
+        <h3>Biểu đồ thể hiện quân số có mặt và quân số vắng</h3>
+        <canvas id="tkchart" width="400" height="100"></canvas>
     </div>
     <div class="chart-item">
-        <canvas id="piechart" width="400" height="400"></canvas>
+        <h3>Đồ thị biểu hiện sự chênh lệch quân số </h3>
+        <canvas id="tkchart2" width="400" height="100"></canvas>
+    </div>
+    <style>
+        #pieChartContainer {
+            display: flex;
+            justify-content: space-between;
+            width: calc(2 * (400px + 3cm)); 
+        }
+
+            #pieChartContainer canvas {
+                width: 400px; 
+                height: 400px; 
+            }
+    </style>
+
+    <div id="pieChartContainer">
+        <div>
+            <h3>Tỷ lệ vắng đơn vị</h3>
+            <canvas id="pieChart"></canvas>
+        </div>
+        <div>
+            <h3>Tỷ lệ vắng Học Viện</h3>
+            <canvas id="pieChart2"></canvas>
+        </div>
     </div>
 </div>
-@* <canvas id="tkchart"></canvas> *@
 
 @section scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="~/js/TK.js"></script>
+    <script>
+        var chart;
+
+        function drawChart(labels, dataTongQS, dataQsVang) {
+            var ctx = document.getElementById('tkchart').getContext('2d');
+            if (chart) {
+                chart.destroy();
+            }
+
+            var chartData = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Tổng quân số',
+                        data: dataTongQS,
+                        backgroundColor: 'rgba(0,119,203,0.3)',
+                        borderColor: 'rgba(0,119,204,1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Quân số vắng',
+                        data: dataQsVang,
+                        backgroundColor: 'rgba(255,0,0,0.3)',
+                        borderColor: 'rgba(255,0,0,1)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    scales: {
+                        xAxes: [{
+                            stacked: true
+                        }],
+                        yAxes: [{
+                            stacked: false,
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function (value) { return Number(value).toLocaleString(); }
+                            }
+                        }]
+                    },
+                    responsive: true,
+                    legend: {
+                        position: 'top',
+                        align: 'start'
+                    }
+                }
+            });
+        }
+        var lineChart; 
+
+        function drawChart2(labels, dataTongQS) { 
+            var ctx = document.getElementById('tkchart2').getContext('2d');
+            if (lineChart) {
+                lineChart.destroy();
+            }
+
+            var chartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Tổng quân số',
+                    data: dataTongQS,
+                    fill: false, 
+                    borderColor: 'rgba(0,119,204,1)',
+                    borderWidth: 2
+                }]
+            };
+
+            lineChart = new Chart(ctx, {
+                type: 'line', 
+                data: chartData,
+                options: {
+                    scales: {
+                        xAxes: [{
+                            display: true 
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function (value) { return Number(value).toLocaleString(); }
+                            }
+                        }]
+                    },
+                    responsive: true,
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+        }
+        var pieChart;
+
+        function drawPieChart(data, labels) {
+            var pieChartCtx = document.getElementById('pieChart').getContext('2d');
+            if (pieChart) {
+                pieChart.destroy();
+            }
+
+            var chartData = {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        'rgba(255, 0, 0, 0.8)',    
+                        'rgba(255, 0, 0, 0.3)',  
+                        'rgba(0, 180, 0, 0.5)',    
+                        'rgba(255, 206, 86, 0.5)' 
+                    ],
+                    borderColor: [
+                        'rgba(255, 0, 0, 1)',
+                        'rgba(255, 0, 0, 1)',
+                        'rgba(0, 180, 0, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            pieChart = new Chart(pieChartCtx, {
+                type: 'pie',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'start'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    var label = chartData.labels[tooltipItem.dataIndex] || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += chartData.datasets[0].data[tooltipItem.dataIndex].toFixed(2) + '%';
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tỷ lệ của đơn vị' 
+                    }
+                }
+
+            });
+        
+        }
+
+        function getDataAndDrawPieChart() {
+            var startDate = document.getElementById('startDatePicker').value;
+            var endDate = document.getElementById('endDatePicker').value;
+            var idDv = document.getElementById('idDvDropdown').value;
+
+            $.ajax({
+                type: 'GET',
+                url: '/ThongKeRecord/UpdateAdditionalChartData',
+                data: { startDate: startDate, endDate: endDate, idDv: idDv },
+                success: function (chartData) {
+                    console.log(chartData);
+
+                    if (chartData && chartData.data && chartData.labels) {
+                        drawPieChart(chartData.data, chartData.labels);
+                    } else {
+                        alert('Dữ liệu không hợp lệ.');
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi lấy dữ liệu từ máy chủ.');
+                }
+            });
+        }
+
+        var pieChart2;
+
+        function drawPieChart2(data, labels) {
+            var pieChartCtx = document.getElementById('pieChart2').getContext('2d');
+            if (pieChart2) {
+                pieChart2.destroy();
+            }
+
+            var chartData = {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        'rgba(255, 0, 0, 0.8)',
+                        'rgba(255, 0, 0, 0.3)',
+                        'rgba(0, 180, 0, 0.5)',
+                        'rgba(255, 206, 86, 0.5)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 0, 0, 1)',
+                        'rgba(255, 0, 0, 1)',
+                        'rgba(0, 180, 0, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            pieChart2 = new Chart(pieChartCtx, {
+                type: 'pie',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'start'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    var label = chartData.labels[tooltipItem.dataIndex] || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += chartData.datasets[0].data[tooltipItem.dataIndex].toFixed(2) + '%';
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tỷ lệ của Học Viện' // Tiêu đề cho biểu đồ
+                    }
+                }
+            });
+        }
+
+        function getDataAndDrawPieChart2() {
+            var startDate = document.getElementById('startDatePicker').value;
+            var endDate = document.getElementById('endDatePicker').value;
+
+            $.ajax({
+                type: 'GET',
+                url: '/ThongKeRecord/UpdateAdditionalChartData2',
+                data: { startDate: startDate, endDate: endDate },
+                success: function (chartData) {
+                    console.log(chartData);
+
+                    if (chartData && chartData.data && chartData.labels) {
+                        drawPieChart2(chartData.data, chartData.labels);
+                    } else {
+                        alert('Dữ liệu không hợp lệ.');
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi lấy dữ liệu từ máy chủ.');
+                }
+            });
+        }
+
+
+
+        function getDataForChart() {
+            var startDate = document.getElementById('startDatePicker').value;
+            var endDate = document.getElementById('endDatePicker').value;
+            var idDv = document.getElementById('idDvDropdown').value;
+
+            $.ajax({
+                type: 'GET',
+                url: '/ThongKeRecord/UpdateChart',
+                data: { startDate: startDate, endDate: endDate, idDv: idDv },
+                success: function (chartData) {
+                    console.log(chartData);
+
+                    if (chartData && chartData.labels && chartData.dataTongQS && chartData.dataQsVang) {
+                        console.log("here");
+                        drawChart(chartData.labels, chartData.dataTongQS, chartData.dataQsVang);
+                        drawChart2(chartData.labels, chartData.dataTongQS, chartData.dataQsVang);
+                    } else {
+                        alert('Dữ liệu không hợp lệ.');
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi lấy dữ liệu từ máy chủ.');
+                }
+            });
+
+        }
+        function getDataForChartHV() {
+            var startDate = document.getElementById('startDatePicker').value;
+            var endDate = document.getElementById('endDatePicker').value;
+
+            $.ajax({
+                type: 'GET',
+                url: '/ThongKeRecord/UpdateChartForHocVien',
+                data: { startDate: startDate, endDate: endDate },
+                success: function (chartData) {
+                    if (chartData && chartData.labels && chartData.dataTongQS && chartData.dataQsVang) {
+                        drawChart(chartData.labels, chartData.dataTongQS, chartData.dataQsVang);
+                        drawChart2(chartData.labels, chartData.dataTongQS, chartData.dataQsVang);
+                    } else {
+                        alert('Dữ liệu không hợp lệ.');
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi lấy dữ liệu từ máy chủ.');
+                }
+            });
+        }
+        </script>
 }
